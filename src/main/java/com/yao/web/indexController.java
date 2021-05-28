@@ -15,7 +15,6 @@ public class indexController {
 //        }
         System.out.println("------index------");
         return "index";/*返回index.html*/
-
     }
     @GetMapping("/blog")
     public Object blog() {
@@ -23,5 +22,4 @@ public class indexController {
         System.out.println("------index------");
         return "blog";/*返回blog.html頁面*/
     }
-
 }
