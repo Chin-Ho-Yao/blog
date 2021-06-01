@@ -2,6 +2,7 @@ package com.yao.service;
 
 import com.yao.dao.UserRepository;
 import com.yao.po.User;
+import com.yao.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User checkUser(String username, String password) {
         /*查詢數據庫有無該名字密碼*/
-        User user = userRepository.findByUsernameAndPassword(username, password);
+        User user = userRepository.findByUsernameAndPassword(username, MD5Utils.code(password));
         return user;
     }
 }

@@ -27,17 +27,15 @@
     <div class="ui middle aligned center aligned grid">
       <div class="column">
         <h2 class="ui teal image header">
-          <div class="content">
             管理後台登錄
-          </div>
         </h2>
-                <!--下面th是提供的路徑-->
+                <!--下面th把用戶密碼提交到/admin/login-->
         <form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
           <div class="ui segment">
             <div class="field">
               <div class="ui left icon input">
                 <i class="user icon"></i>
-                <input type="text" name="email" placeholder="用戶名">
+                <input type="text" name="username" placeholder="用戶名">
               </div>
             </div>
             <div class="field">
@@ -46,10 +44,12 @@
                 <input type="password" name="password" placeholder="密碼">
               </div>
             </div>
-            <div class="ui fluid large teal submit button">Login</div>
-          </div>
+            <button class="ui fluid large teal submit button">登錄</button>
 
+          </div>
+          <!--彈出錯誤提示-->
           <div class="ui error message"></div>
+          <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}">用戶名和密碼錯誤</div>
 
         </form>
 
@@ -69,12 +69,26 @@
 <script src="../static/lib/waypoints/jquery.waypoints.js"></script>
 <!--/*/</th:block>/*/-->
 <script>
-    $('.menu.toggle').click(function () {
-        $('.m-item').toggleClass('m-mobile-hide')
-    })
+/*彈出錯誤提示*/
+/*表單驗證identifier與表單內部值保持一定就可以了*/
+    $('.ui.form').form({
+        fields : {
+            username : {
+                identifier: 'username',<!--標題要符合表單內部屬性質-->
+                rules: [{    <!--驗證規則，可指定多個值-->
+                    type: 'empty',   <!--類型-->
+                    prompt: '請輸入用戶名'   <!--提示內容-->
+                }]
+            },
+            password : {
+                identifier: 'password',    <!--標題要符合表單內部屬性質-->
+                rules: [{                  <!--驗證規則，可指定多個值-->
+                    type: 'empty',         <!--類型-->
+                    prompt: '請輸入密碼'     <!--提示內容-->
+                }]
 
-    $('.ui.dropdown').dropdown({
-        on: 'hover'
+            }
+        }
     });
 </script>
 </body>

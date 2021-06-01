@@ -1,5 +1,7 @@
 package com.yao.po;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class Type {
     @Id
     @GeneratedValue
     private Long id;
+    @NotBlank(message = "分類名稱不能為空（後端）")/*後端非空校驗*/
     private String name;
 
     @OneToMany(mappedBy = "type")

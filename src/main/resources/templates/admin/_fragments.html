@@ -16,23 +16,25 @@
 
 </head>
 <body>
+
   <!--導航-->
   <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
       <div class="ui inverted secondary stackable menu">
         <h2 class="ui teal header item">管理後台</h2>
-        <a href="#" class="active m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'><i class=" home icon"></i>博客</a>
-        <a href="#" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'><i class=" idea icon"></i> 分類</a>
-        <a href="#" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'><i class=" tags icon"></i> 標籤</a>
+        <a href="#" th:href="@{/admin/blogs}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class=" home icon"></i>博客</a>
+                              <!--分類管理導航-->
+        <a href="#" th:href="@{/admin/types}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class=" idea icon"></i> 分類</a>
+        <a href="#" th:href="@{/admin/tags}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class=" tags icon"></i> 標籤</a>
         <div class="right m-item menu m-mobile-hide">
           <div class="ui  dropdown item">
             <div class="text">
-              <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005" alt=""><!--頭像-->
-              姚欽和
+              <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005" th:src="@{${session.user.avatar}}"><!--頭像-->
+              <span th:text="${session.user.nickname}">姚欽和</span>
             </div>
             <i class="dropdown icon"></i><!--製作下拉菜單-->
             <div class="menu">
-              <a href="#" class="item">註銷</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
+              <a href="#" th:href="@{/admin/logout}" class="item">註銷</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
             </div>
           </div>
         </div>
@@ -55,15 +57,17 @@
         </div>
         <div class="three wide column">
           <h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
-          <div class="ui inverted link list"></div>
-          <a href="#" class="item">用戶故事(User Story)<br></a>
-          <a href="#" class="item">關於刻意練習的清單<br></a>
-          <a href="#" class="item">失敗要趁早<br></a>
+          <div class="ui inverted link list">
+            <a href="#" class="item">用戶故事(User Story)<br></a>
+            <a href="#" class="item">關於刻意練習的清單<br></a>
+            <a href="#" class="item">失敗要趁早<br></a>
+          </div>
         </div>
         <div class="three wide column"><h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
-          <div class="ui inverted link list"></div>
-          <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
-          <a href="#" class="item">Line:yaoyao25<br></a>
+          <div class="ui inverted link list">
+            <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
+            <a href="#" class="item">Line:yaoyao25<br></a>
+          </div>
         </div>
         <div class="seven wide column">
           <h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>

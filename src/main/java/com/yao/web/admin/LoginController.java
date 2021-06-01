@@ -31,11 +31,11 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
-                        HttpSession session,
+                        HttpSession session,/*把帳密放到session*/
                         RedirectAttributes attributes) {
-        User user = userService.checkUser(username, password);
+        User user = userService.checkUser(username, password);/*帳號密碼傳進來*/
         if (user != null) {
-            user.setPassword(null);/*不要把密碼傳到前端去，在頁面拿到密碼很不安全，所以要這樣處理 “淤雌*/
+            user.setPassword(null);/*不要把密碼傳到前端去，在頁面拿到密碼很不安全，所以要這樣處理*/
             session.setAttribute("user", user);/*user放進來 session裡面就有user已經登錄了*/
             return "admin/index";/*然後回到登錄首頁*/
         } else {/*帳密不對的情況，返回登錄頁，不能用return admin/login這樣之後再次登錄路徑會有問題*/
