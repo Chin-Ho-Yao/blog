@@ -14,7 +14,7 @@
 <body>
 
 <!--導航-->
-<nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+<nav th:replace="admin/_fragments :: menu(3)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">管理後台</h2>
@@ -43,8 +43,8 @@
 <div class="ui attached pointing menu"><!--attached依附上一個元件 pointing 有作用的會出現一個小pointing-->
   <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
     <div class="right menu"><!--讓發布與列表靠右邊-->
-      <a href="#" th:href="@{/admin/types/input}" class="item">新增</a>
-      <a href="#" th:href="@{/admin/types}" class="teal active item">列表</a>
+      <a href="#" th:href="@{/admin/tags/input}" class="item">新增</a>
+      <a href="#" th:href="@{/admin/tags}" class="teal active item">列表</a>
     </div>
   </div>
 </div>
@@ -71,9 +71,9 @@
         <td th:text="${iterStat.count}">1</td>
         <td th:text="${type.name}">刻意練習清單</td><!--th模板渲染會把數據替換掉-->
         <td>
-          <!--調用input右邊的id傳述之後就會替換到types/id這個位置-->
-          <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">編輯</a>
-          <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">刪除</a>
+          <!--調用input右邊的id傳述之後就會替換到tags/id這個位置-->
+          <a href="#" th:href="@{/admin/tags/{id}/input(id=${type.id})}" class="ui mini teal basic button">編輯</a>
+          <a href="#" th:href="@{/admin/tags/{id}/delete(id=${type.id})}" class="ui mini red basic button">刪除</a>
         </td>
       </tr>
       </tbody>
@@ -81,11 +81,11 @@
       <tr>
         <th colspan="6" >
           <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
-            <a th:href="@{/admin/types(page=${page.number}-1)}" class="item" th:unless="${page.first}">上一頁</a>
-            <a th:href="@{/admin/types(page=${page.number}+1)}" class="item" th:unless="${page.last}">下一頁</a>
+            <a th:href="@{/admin/tags(page=${page.number}-1)}" class="item" th:unless="${page.first}">上一頁</a>
+            <a th:href="@{/admin/tags(page=${page.number}+1)}" class="item" th:unless="${page.last}">下一頁</a>
           </div>
                   <!--點擊新增後的效果跳到input-->
-          <a href="#" th:href="@{/admin/types/input}" class="ui mini right floated  teal basic button">新增</a>
+          <a href="#" th:href="@{/admin/tags/input}" class="ui mini right floated  teal basic button">新增</a>
         </th>
       </tr>
       </tfoot>
@@ -112,7 +112,8 @@
           <a href="#" class="item">失敗要趁早<br></a>
         </div>
       </div>
-      <div class="three wide column"><h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
+      <div class="three wide column">
+        <h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
         <div class="ui inverted link list">
           <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
           <a href="#" class="item">Line:yaoyao25<br></a>

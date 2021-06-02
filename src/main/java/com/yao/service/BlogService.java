@@ -1,6 +1,7 @@
 package com.yao.service;
 
 import com.yao.po.Blog;
+import com.yao.vo.BlogQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface BlogService {
 
     /*分頁查詢，返回一個Page對象，Blog類型，list表查詢一組數據*/
     /*查詢要傳遞的參數。除了pageable，還有查詢時送出的參數（封裝成Blog）*/
-    Page<Blog> listBlog(Pageable pageable, Blog blog);
+    Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
 
     /*新增*/
     Blog saveBlog(Blog blog);

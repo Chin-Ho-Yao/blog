@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by Jack Yao on 2021/5/29 3:52 下午
@@ -46,6 +47,11 @@ public class TypeServiceImpl implements TypeService{
     public Page<Type> listType(Pageable pageable) {
         return typeRepository.findAll(pageable);
         /*分頁查詢，springboot就有jpa能用了，傳遞Pageable就會查詢封裝Page類型的對象*/
+    }
+
+    @Override
+    public List<Type> listType() {
+        return typeRepository.findAll();
     }
 
     @Transactional

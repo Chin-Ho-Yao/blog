@@ -3,6 +3,7 @@ package com.yao.service;
 import com.yao.dao.BlogRepository;
 import com.yao.po.Blog;
 import com.yao.po.Type;
+import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class BlogServiceImpl implements BlogService{
     /*Jpa有幫我們封裝好這種高級查詢，可以直接把接口拿過來*/
     /*BlogRepository要先繼承JpaSpecificationExecutor*/
     @Override
-    public Page<Blog> listBlog(Pageable pageable, Blog blog) {
+    public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
         /*new出來使用，這是傳遞的第一個參數*/
         return blogRepository.findAll(new Specification<Blog>() {
             /*條件動態組合在這裡處理，new出來就自動會給這個方法，就是處理動態查詢條件*/
@@ -65,9 +66,9 @@ public class BlogServiceImpl implements BlogService{
                     predicates.add(cb.like(root.<String>get("title"), "%"+blog.getTitle()+"%"));
                 }
                 /*傳遞分類，傳遞的是type對象，是根據id值判斷*/
-                if (blog.getType().getId() != null){
+                if (blog.getTypeId() != null){
                     /*非空一樣add近來，拿到type對象裡面的id，再把blog對象get*/
-                    predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getType().getId()));
+                    predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
                     /*這樣就構造好了這個分類*/
                 }
                 /*推薦，布林值，這邊只判斷true就可以了*/
