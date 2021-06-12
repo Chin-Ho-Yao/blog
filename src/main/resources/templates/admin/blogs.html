@@ -68,7 +68,7 @@
                         <div class="default text">分類</div><!--加上這個框框會一樣大不然原本不同-->
                         <div class="menu"><!--下拉選單內容-->
                             <!--通過th:each，拿到type從types裡面獲取。賦值，data-value這個值需要用th:data-value來賦值，用${type.id}作為data-value的值。th:text，顯示的值用name值作為顯示-->
-                            <div th:each="type :: ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">錯誤日誌</div><!--data-value是傳到後端的值-->
+                            <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">錯誤日誌</div><!--data-value是傳到後端的值-->
                             <!--data-value可以註解掉，這種方式，用html可作用，thymeleaf模版下拿掉保值靜態thymeleaf不會影響效果-->
                             <!--/*-->
                             <div class="item" data-value="2">開發者手冊</div>

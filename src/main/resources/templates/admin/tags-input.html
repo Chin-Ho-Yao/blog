@@ -57,11 +57,11 @@
 </div>
 
 <!--中間內容-->
-<div class="m-container-small m-padded-tb-big">
+<div class="m-container-small m-paqdded-tb-big">
   <div class="ui container">
     <!-- container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
                                                         <!--這邊判斷有無id會進入不同路徑，以區分新增或編輯-->
-    <form action="#" method="post" th:object="${type}" th:action="*{id}==null ? @{/admin/tags} : @{/admin/tags/{id}(id=*{id})}" class="ui form">
+    <form action="#" method="post" th:object="${tag}" th:action="*{id}==null ? @{/admin/tags} : @{/admin/tags/{id}(id=*{id})}" class="ui form">
                         <!--傳遞id-->
       <input type="hidden" name="id" th:value="*{id}">
       <!--首圖引用地址-->

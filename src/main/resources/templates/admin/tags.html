@@ -67,13 +67,13 @@
       </thead>
       <tbody>
       <!--從page拿索引對象-->
-      <tr th:each="type,iterStat : ${page.content}">
+      <tr th:each="tag,iterStat : ${page.content}">
         <td th:text="${iterStat.count}">1</td>
-        <td th:text="${type.name}">刻意練習清單</td><!--th模板渲染會把數據替換掉-->
+        <td th:text="${tag.name}">刻意練習清單</td><!--th模板渲染會把數據替換掉-->
         <td>
           <!--調用input右邊的id傳述之後就會替換到tags/id這個位置-->
-          <a href="#" th:href="@{/admin/tags/{id}/input(id=${type.id})}" class="ui mini teal basic button">編輯</a>
-          <a href="#" th:href="@{/admin/tags/{id}/delete(id=${type.id})}" class="ui mini red basic button">刪除</a>
+          <a href="#" th:href="@{/admin/tags/{id}/input(id=${tag.id})}" class="ui mini teal basic button">編輯</a>
+          <a href="#" th:href="@{/admin/tags/{id}/delete(id=${tag.id})}" class="ui mini red basic button">刪除</a>
         </td>
       </tr>
       </tbody>
