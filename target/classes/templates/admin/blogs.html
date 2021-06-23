@@ -1,164 +1,186 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="admin/_fragments :: head(~{::title})">
-  <meta charset="UTF-8">
-  <!--  移動端預覽設置  -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--  /移動端預覽設置  -->
-  <title>博客管理</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-  <!--    引入me.css來調整間距-->
-  <link rel="stylesheet" href="../../static/css/me.css">
+    <meta charset="UTF-8">
+    <!--  移動端預覽設置  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--  /移動端預覽設置  -->
+    <title>博客管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!--    引入me.css來調整間距-->
+    <link rel="stylesheet" href="../../static/css/me.css">
 
 </head>
 <body>
 
 <!--導航-->
 <nav th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
-  <div class="ui container">
-    <div class="ui inverted secondary stackable menu">
-      <h2 class="ui teal header item">管理後台</h2>
-      <a href="#" class="active m-item item m-mobile-hide"><i class=" home icon"></i>博客</a>
-      <a href="#" class="m-item item m-mobile-hide"><i class=" idea icon"></i> 分類</a>
-      <a href="#" class="m-item item m-mobile-hide"><i class=" tags icon"></i> 標籤</a>
-      <div class="right m-item menu m-mobile-hide">
-        <div class="ui  dropdown item">
-          <div class="text">
-            <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005" alt=""><!--頭像-->
-            姚欽和
-          </div>
-          <i class="dropdown icon"></i><!--製作下拉菜單-->
-          <div class="menu">
-            <a href="#" class="item">註銷</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
-          </div>
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">管理後台</h2>
+            <a href="#" class="active m-item item m-mobile-hide"><i class=" home icon"></i>博客</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class=" idea icon"></i> 分類</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class=" tags icon"></i> 標籤</a>
+            <div class="right m-item menu m-mobile-hide">
+                <div class="ui  dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005" alt=""><!--頭像-->
+                        姚欽和
+                    </div>
+                    <i class="dropdown icon"></i><!--製作下拉菜單-->
+                    <div class="menu">
+                        <a href="#" class="item">註銷</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
-    <i class="sidebar icon"></i>
-  </a>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
 </nav>
 <!--二級導航-->
 <div class="ui attached pointing menu"><!--attached依附上一個元件 pointing 有作用的會出現一個小pointing-->
-  <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
-    <div class="right menu"><!--讓發布與列表靠右邊-->
-      <a href="#" class="item">發布</a>
-      <a href="#" class="active item">列表</a>
+    <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
+        <div class="right menu"><!--讓發布與列表靠右邊-->
+            <a href="#" class="item">發布</a>
+            <a href="#" class="active item">列表</a>
+        </div>
     </div>
-  </div>
 </div>
 
 <!--中間內容-->
 <div class="m-container-small m-padded-tb-big">
-  <div class="ui container"><!--container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
-
-
-    <form action="#" method="post" class="ui secondary segment form">
-      <div class="inline fields">
-        <div class="field">
-          <input type="text" name="title" placeholder="標題">
-        </div>
-        <div class="field">
-          <div class="ui selection dropdown">
-            <input type="hidden" name="type">
-            <i class="dropdown icon"></i>
-            <div class="default text">分類</div><!--加上這個框框會一樣大不然原本不同-->
-            <div class="menu"><!--下拉選單內容-->
-              <div class="item" data-value="1">錯誤日誌</div><!--data-value是傳到後端的值-->
-              <div class="item" data-value="2">開發者手冊</div>
+    <div class="ui container"><!--container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
+        <div method="post" class="ui secondary segment form">
+            <!--給一個name傳遞後台分頁第幾頁用，當點擊上一頁下一頁的時候，動態的賦值-->
+            <!--再提交form表單傳遞到後端-->
+            <!--只刷新部分這邊就不能用subbmit提交，要用jQuery-->
+            <input type="hidden" name="page">
+            <div class="inline fields">
+                <div class="field">
+                    <input type="text" name="title" placeholder="標題">
+                </div>
+                <div class="field">
+                    <div class="ui selection dropdown">
+                        <input type="hidden" name="typeId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">分類</div><!--加上這個框框會一樣大不然原本不同-->
+                        <div class="menu"><!--下拉選單內容-->
+                            <!--通過th:each，拿到type從types裡面獲取。賦值，data-value這個值需要用th:data-value來賦值，用${type.id}作為data-value的值。th:text，顯示的值用name值作為顯示-->
+                            <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">錯誤日誌</div><!--data-value是傳到後端的值-->
+                            <!--data-value可以註解掉，這種方式，用html可作用，thymeleaf模版下拿掉保值靜態thymeleaf不會影響效果-->
+                            <!--/*-->
+                            <div class="item" data-value="2">開發者手冊</div>
+                            <!--*/-->
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui chechbox">
+                        <input type="checkbox" id="recommend" name="recommend">
+                        <label for="recommend">推薦</label><!--id與for關聯 點擊打勾匡或是文字都可以選中-->
+                    </div>
+                </div>
+                <div class="field">
+                    <!--給id，點擊時觸發點擊事件-->
+                    <button type="button" id="search-btn" class="ui teal basic button"><i class="search icon"></i>搜尋</button>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="field">
-          <div class="ui chechbox">
-            <input type="checkbox" id="recommend" name="recommend">
-            <label for="recommend">推薦</label><!--id與for關聯 點擊打勾匡或是文字都可以選中-->
-          </div>
-        </div>
-        <div class="field">
-          <button class="ui teal basic button"><i class="search icon"></i>搜尋</button>
-        </div>
-      </div>
-    </form>
-                  <!--compact:讓表格緊縮-->
-    <table class="ui compact teal table">
-      <thead>
-      <tr>
-        <th></th>
-        <th>標題</th>
-        <th>類型</th>
-        <th>推薦</th>
-        <th>更新時間</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td>1</td>
-        <td>刻意練習清單</td>
-        <td>認知升級</td>
-        <td>是</td>
-        <td>2021-05-24 13:14</td>
-        <td>
-          <a href="#" class="ui mini teal basic button">編輯</a>
-          <a href="#" class="ui mini red basic button">刪除</a>
-        </td>
-      </tr>
-      </tbody>
-      <tfoot>
-      <tr>
-        <th colspan="6">
-          <div class="ui mini floated pagination menu">
-            <a class="item">上一頁</a>
-            <a class="item">下一頁</a>
-          </div>
-          <a href="" class="ui mini right floated  teal basic button">新增</a>
-        </th>
-      </tr>
-      </tfoot>
+        <div id="table-container"><!--調用該id方法，搜尋button-->
+            <!--compact:讓表格緊縮，th定義片段給BlogController-->
+            <!--查詢完之後返為到這個片段，其他地方都不會刷新-->
+            <table th:fragment="blogList" class="ui compact teal table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>標題</th>
+                    <th>類型</th>
+                    <th>推薦</th>
+                    <th>更新時間</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--利用循環進行數據渲染，先拿到blog，給他iterStat，page對象裡面content屬性，就能獲取到所有的blog列表-->
+                <!--然後拿到其中一個來進行循環-->
+                <tr th:each="blog,iterStat : ${page.content}">
+                    <!--iterStat這個技術工具調用count-->
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${blog.title}">刻意練習清單</td>
+                    <td th:text="${blog.type.name}">認知升級</td>
+                    <!--是否推薦，這是布林值所以加入判斷-->
+                    <td th:text="${blog.recommend} ? '是':'否'">是</td>
+                    <!--更新時間-->
+                    <td th:text="${blog.updateTime}">2021-05-24 13:14</td>
+                    <td>
+                        <!--根據blog id去刪除修改-->
+                        <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">編輯</a>
+                        <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">刪除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="6">
+                        <!--th:if..頁數大於1這塊div才顯示，不然一頁也顯示會多個白條影響顯示效果-->
+                        <div class="ui mini floated pagination menu" th:if="${page.totalPages}>1">
+                            <!--變成按鈕，點擊時調用，用js，把這個對象傳遞過去，不要用href自定義一個data-page-->
+                            <!--data-page="@{page.number}+1這樣寫會有問題，thymeleaf屬性模板不能直接用等於-->
+                            <!--自定義解析要加上th:attr=，解析完之後就會data-page等於1之類的去表示-->
+                            <!--這邊處理完在賦值給page-->
+                            <a onclick="page(this)" th:attr="data-page=${page.number}-1" class="item" th:unless="${page.first}">上一頁</a>
+                            <a onclick="page(this)" th:attr="data-page=${page.number}+1" class="item" th:unless="${page.last}">下一頁</a>
+                        </div>
+                        <a href="/templates/admin/blogs-input" th:href="@{/admin/blogs/input}" class="ui mini right floated  teal basic button">新增</a>
+                    </th>
+                </tr>
+                </tfoot>
 
-    </table>
-  </div>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!--底部footer-->
 <footer th:replace="admin/_fragments :: footer" class=" vertical inverted segment ui m-padded-tb-massive">
-  <div class="ui center aligned container">
-    <div class=" ui inverted divided stackable grid">
-      <div class="three wide column">
-        <div class="ui inverted link list"></div>
-        <div class="item">
-          <img src="../../static/images/footerQrcode.png" class="ui rounded centered image" alt="" style="width: 110px"/>
-        </div>
-      </div>
-      <div class="three wide column">
-        <h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
-        <div class="ui inverted link list"></div>
-        <a href="#" class="item">用戶故事(User Story)<br></a>
-        <a href="#" class="item">關於刻意練習的清單<br></a>
-        <a href="#" class="item">失敗要趁早<br></a>
-      </div>
-      <div class="three wide column"><h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
-        <div class="ui inverted link list"></div>
-        <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
-        <a href="#" class="item">Line:yaoyao25<br></a>
-      </div>
-      <div class="seven wide column">
-        <h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>
-        <div class="ui inverted link list"></div>
-        <p class="m-text-thin m-text-spaced m-opacity-mini">這是我的個人博客，我喜歡運動，研究新奇的事物，是善於思考的好奇寶寶</p>
-      </div>
+    <div class="ui center aligned container">
+        <div class=" ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list"></div>
+                <div class="item">
+                    <img src="../../static/images/footerQrcode.png" class="ui rounded centered image" alt=""
+                         style="width: 110px"/>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
+                <div class="ui inverted link list"></div>
+                <a href="#" class="item">用戶故事(User Story)<br></a>
+                <a href="#" class="item">關於刻意練習的清單<br></a>
+                <a href="#" class="item">失敗要趁早<br></a>
+            </div>
+            <div class="three wide column"><h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
+                <div class="ui inverted link list"></div>
+                <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
+                <a href="#" class="item">Line:yaoyao25<br></a>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>
+                <div class="ui inverted link list"></div>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">這是我的個人博客，我喜歡運動，研究新奇的事物，是善於思考的好奇寶寶</p>
+            </div>
 
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright 2021 Designed by Jack Yao</p>
     </div>
-    <div class="ui inverted section divider"></div>
-    <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright 2021 Designed by Jack Yao</p>
-  </div>
 </footer>
 
 <!--字元引入-->
 
-<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <!--/*/</th:block>/*/-->
@@ -170,6 +192,30 @@
     $('.ui.dropdown').dropdown({
         on: 'hover'
     });
+    /*page傳進來，取值賦值，先獲取name=page的隱含域，然後val賦值，當點擊後傳遞自訂義data-page的值*/
+    /*$(obj)這樣就轉成jQuery對象，通過date方法或的字定義的值，就可以拿到data-page對應的的值*/
+    function page(obj){
+        $("[name='page']").val($(obj).data("page"));
+        /*賦值之後希望把表單發送到後面控制器裡面處理，在返回前端渲染出去*/
+        /*前端頁面請求*/
+        loaddata();
+    }
+    /*點擊事件，也是調用loaddata方法來發送請求*/
+    $("#search-btn").click(function (){
+        loaddata();
+    });
+
+    /*自定義loaddata來發送請求，用jquery的load方法*/
+    /*在外層div上面使用load方法來動態獲取表格裡的內容*/
+    function loaddata(){
+        $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search",{
+            title : $("[name='title']").val(),
+            typeId : $("[name='typeId']").val(),
+            recommend : $("[name='recommend']").prop('checked'),
+            page : $("[name='page']").val()
+        });
+    }
+
 </script>
 </body>
 </html>

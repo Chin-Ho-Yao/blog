@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -38,7 +39,7 @@ public class BlogController {
                 model.addAttribute("page", blogService.listBlog(pageable, blog));
         /*listBlog裡面的值，除了blog還要有pageable*/
         /*pageable:分頁的對象，要指定默認的參數@PageableDefault，不指定也可以*/
-        /*按updateTime更新時間倒敘排序DESC*/
+        /*按updateTime更新時間倒敘排序 DESC*/
         /*blog:構造好的對象*/
         /*根據blogService.listBlog(pageable, blog)查詢page對象，放到model模型*/
         /*前端就可以拿到model模型進行數據的渲染*/
@@ -46,7 +47,7 @@ public class BlogController {
     }
 
     /*查詢才使用*/
-    @GetMapping("/blogs/search")
+    @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 2, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
 
         model.addAttribute("page", blogService.listBlog(pageable, blog));
