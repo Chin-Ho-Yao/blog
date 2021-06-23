@@ -4,6 +4,8 @@ import com.yao.po.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Created by Jack Yao on 2021/5/29 3:45 下午
  */
@@ -11,6 +13,8 @@ public interface TagService {
     Tag saveTag(Tag tag);/*新增完返回Tag，新增要保存，用saveTag，傳過來的是Tag實體對象*/
 
     Tag getTag(Long id);
+
+    List<Tag> listTag();/*不傳遞任何參數獲取所有tag*/
 
     /*通過名稱查詢Tag*/
     Tag getTagByName(String name);

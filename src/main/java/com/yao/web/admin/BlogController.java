@@ -1,6 +1,8 @@
 package com.yao.web.admin;
 
+import com.yao.po.Blog;
 import com.yao.service.BlogService;
+import com.yao.service.TagService;
 import com.yao.service.TypeService;
 import com.yao.vo.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +23,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class BlogController {
 
+    private static final String INPUT = "admin/blogs-input";
+    private static final String LIST = "admin/blogs";
+    private static final String REDIRECT_LIST = "redirect:/admin/blogs";
+
     /*放一組數據過來*/
     @Autowired
     private BlogService blogService;
 
     @Autowired
     private TypeService typeService;
+
+    @Autowired
+    private TagService tagService;
 
     /*加上model*/
     @GetMapping("/blogs")
@@ -44,6 +53,18 @@ public class BlogController {
         /*根據blogService.listBlog(pageable, blog)查詢page對象，放到model模型*/
         /*前端就可以拿到model模型進行數據的渲染*/
         return "admin/blogs";/*blogs方法就是希望訪問到頁面就能看到博客管理頁面*/
+    }
+
+    @GetMapping("/blogs/input")
+    public String input(Model model){
+        /*分類初始化*/
+        model.addAttribute("types",typeService.listType());
+        /*初始化，修改的時候頁面要初始化取值*/
+        model.addAttribute("blog",new Blog());
+        /*初始化*/
+        model.addAttribute("tags",tagService.listTag());
+        /*初始化之後就可以在model拿到數據*/
+        return INPUT;
     }
 
     /*查詢才使用*/
