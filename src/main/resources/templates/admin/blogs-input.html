@@ -52,7 +52,7 @@
 <!--中間內容-->
 <div class="m-container m-padded-tb-big">
   <div class="ui container"><!-- container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
-    <form id="blog-form" action="#" th:action="@{/admin/blogs}" method="post" class="ui form">
+    <form id="blog-form" action="#" th:object="${blog}" th:action="@{/admin/blogs}" method="post" class="ui form">
       <input type="hidden" name="published">
       <div class="required field"><!--required要求必須輸入，沒輸入會顯示紅色匡-->
         <div class="ui left labeled input">
@@ -104,7 +104,7 @@
           <div class="ui left labeled action input"><!--action可以讓前面標籤跟後面下拉匡沒有圓角的年再一起-->
             <label class="ui compact teal basic label">標籤</label>
             <div class="ui fluid selection multiple search dropdown"><!--multiple search 允許選取多個標籤-->
-              <input type="hidden" name="typeIds" th:value="*{tagIds}">
+              <input type="hidden" name="tagIds" th:value="*{tagIds}" >
               <i class="dropdown icon"></i>
               <div class="default text">標籤</div>
               <div class="menu">

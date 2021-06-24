@@ -1,6 +1,7 @@
 package com.yao.web.admin;
 
 import com.yao.po.Blog;
+import com.yao.po.User;
 import com.yao.service.BlogService;
 import com.yao.service.TagService;
 import com.yao.service.TypeService;
@@ -14,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Jack Yao on 2021/5/28 10:07 下午
@@ -67,6 +71,25 @@ public class BlogController {
         return INPUT;
     }
 
+    @PostMapping("/blogs")
+    public String post(Blog blog, RedirectAttributes attributes, HttpSession session){/*接收Blog對象，session有user用來設置blog*/
+        /*當前登入用戶從session拿到user*/
+        blog.setUser((User) session.getAttribute("user"));
+        /*blogs-input過來的是type.id根據ID初始化type*/
+        blog.setType(typeService.getType(blog.getType().getId()));
+        blog.setTags(tagService.listTag(blog.getTagIds()));
+        /*返回blog對象b*/
+        Blog b = blogService.saveBlog(blog);
+        /*非空校驗，彈出訊息*/
+        if (blog == null) {
+            attributes.addFlashAttribute("message","操作失敗");
+        }else {
+            attributes.addFlashAttribute("message","操作成功");
+        }
+        return REDIRECT_LIST;/*最後返回列表頁面*/
+
+    }
+
     /*查詢才使用*/
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 2, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
@@ -75,6 +98,8 @@ public class BlogController {
         /*查詢完返回的內容改返回blogs下面的blogList片段，這個片段需要被定義*/
         return "admin/blogs :: blogList";
     }
+
+
 
 }
 

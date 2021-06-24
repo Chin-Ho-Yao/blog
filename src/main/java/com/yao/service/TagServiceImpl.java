@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +41,25 @@ public class TagServiceImpl implements TagService{
     @Override
     public List<Tag> listTag() {
         return tagRepository.findAll();
+    }
+
+    @Override
+    public List<Tag> listTag(String ids) {//現在id是1,2,3，所以把id轉換成字符串如下
+        return tagRepository.findAll();
+    }
+
+    /*老師寫的方法*/
+    private List<Long> converToList(String ids){
+        List<Long> list = new ArrayList<>(converToList(ids));
+        /*非空判斷*/
+        if("".equals(ids) && ids != null){
+            /*把字串轉換成數組*/
+            String[] idarray = ids.split(",");
+            for (int i = 0;i < idarray.length;i++){
+                list.add(new Long(idarray[i]));
+            }
+        }
+        return list;
     }
 
     @Override

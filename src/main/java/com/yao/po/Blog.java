@@ -18,6 +18,8 @@ public class Blog {
     @GeneratedValue
     private Long id;
     private String title;
+    @Basic(fetch = FetchType.LAZY)
+    @Lob/*大字段類型，只有第一次初始化有效，合併懶加載使用，只在用到時才載入關聯的物件。*/
     private String content;
     private String firstPicture;
     private String flag;
@@ -43,6 +45,18 @@ public class Blog {
 
     @OneToMany(mappedBy = "blog")
     private List<Comment> comments = new ArrayList<>();
+
+    /*不需要保存數據庫用@Transient，這樣就不會入庫*/
+    @Transient
+    private String tagIds;
+
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
 
     public Blog() {}
 
