@@ -6,7 +6,9 @@ import com.yao.web.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,6 +54,14 @@ public class TypeServiceImpl implements TypeService{
     @Override
     public List<Type> listType() {
         return typeRepository.findAll();
+    }
+
+    /*拿到index頁面的type*/
+    @Override
+    public List<Type> listTypeTop(Integer size) {
+        Sort sort = new Sort(Sort.Direction.DESC,"blogs.size"); /*指定排序再傳遞給pageable*/
+        Pageable pageable = new PageRequest(0,size,sort);/*拿第一頁指定size就可以了*/
+        return typeRepository.findTop(pageable);/*傳回我們自定義好的方法*/
     }
 
     @Transactional

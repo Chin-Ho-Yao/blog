@@ -6,7 +6,9 @@ import com.yao.web.NotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +59,14 @@ public class TagServiceImpl implements TagService{
     @Override
     public List<Tag> listTag(String ids) {//現在id是1,2,3，所以把id轉換成字符串如下
         return tagRepository.findAll(converToList(ids));
+    }
+
+    /*index的tag處理*/
+    @Override
+    public List<Tag> listTagTop(Integer size) {
+        Sort sort = new Sort(Sort.Direction.DESC,"tags.size");/*sort由DESC排序依照tags.size*/
+        Pageable pageable = new PageRequest(0,size,sort);/*選擇第一頁的size按照sort排序*/
+        return tagRepository.findTop(pageable);
     }
 
     /*老師寫的方法*/

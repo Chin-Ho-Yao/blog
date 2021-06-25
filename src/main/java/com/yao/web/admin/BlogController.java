@@ -42,7 +42,7 @@ public class BlogController {
     /*加上model*/
     @GetMapping("/blogs")
     public String blogs(@PageableDefault(size = 2, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
-
+        /*BQ為查詢用*/
         /*不需要用分頁方式獲取，直接獲取所有，在typeservice定義List<Type>，這邊就可以用listType*/
         model.addAttribute("types", typeService.listType());
         /*拿到type之後進blog.html渲染*/
@@ -97,6 +97,14 @@ public class BlogController {
         blog.setTags(tagService.listTag(blog.getTagIds()));
         /*返回blog對象b*/
         Blog b = blogService.saveBlog(blog);
+
+        /*判斷拿到blog有id的話就調用updateBlog方法，先查詢到已有的對象在更新*/
+        if (blog.getId() == null){
+            b = blogService.saveBlog(blog);
+        }else {
+            b = blogService.updateBlog(blog.getId(), blog);
+        }
+
         /*非空校驗，彈出訊息*/
         if (blog == null) {
             attributes.addFlashAttribute("message","操作失敗");

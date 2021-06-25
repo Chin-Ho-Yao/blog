@@ -22,6 +22,9 @@ public interface TagService {
 
     List<Tag> listTag(String ids);/*最終返回List，傳遞逗號隔開的多個id*/
 
+    /*index的tag處理*/
+    List<Tag> listTagTop(Integer size);
+
     Tag updateTag(Long id, Tag tag);/*修改最終返回根據id查到的對象，然後再把對象按照新內容修改保存在數據庫，Tag就是修改參數的對象*/
 
     void deleteTag(Long id);/*刪除就返回一個空，根據Long id主鍵來刪除*/

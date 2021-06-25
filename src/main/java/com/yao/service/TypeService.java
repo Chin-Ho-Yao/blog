@@ -21,6 +21,9 @@ public interface TypeService {
 
     List<Type> listType();
 
+    List<Type> listTypeTop(Integer size);/*根據傳遞的值來取數據列表的大小*/
+
+
     Type updateType(Long id, Type type);/*修改最終返回根據id查到的對象，然後再把對象按照新內容修改保存在數據庫，type就是修改參數的對象*/
 
     void deleteType(Long id);/*刪除就返回一個空，根據Long id主鍵來刪除*/

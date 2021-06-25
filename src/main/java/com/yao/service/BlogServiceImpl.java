@@ -3,6 +3,7 @@ package com.yao.service;
 import com.yao.dao.BlogRepository;
 import com.yao.po.Blog;
 import com.yao.po.Type;
+import com.yao.util.MyBeanUtils;
 import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
 import org.springframework.beans.BeanUtils;
@@ -92,6 +93,11 @@ public class BlogServiceImpl implements BlogService{
         }, pageable);
     }
 
+    @Override
+    public Page<Blog> listBlog(Pageable pageable) {
+        return blogRepository.findAll(pageable);
+    }
+
     @Transactional
     @Override
     public Blog saveBlog(Blog blog) {
@@ -119,7 +125,8 @@ public class BlogServiceImpl implements BlogService{
             throw new NotFoundException("不存在該類型");
         }
         /*否則就是存在，把新的內容修改屬性，把blog屬性給予b，然後保存b就好*/
-        BeanUtils.copyProperties(blog,b);
+        BeanUtils.copyProperties(blog,b, MyBeanUtils.getNullPropertyNames(blog));
+        b.setUpdateTime(new Date());
         return blogRepository.save(b);
     }
 

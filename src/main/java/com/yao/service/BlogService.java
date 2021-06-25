@@ -16,6 +16,8 @@ public interface BlogService {
     /*查詢要傳遞的參數。除了pageable，還有查詢時送出的參數（封裝成Blog）*/
     Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
 
+    Page<Blog> listBlog(Pageable pageable);
+
     /*新增*/
     Blog saveBlog(Blog blog);
 
