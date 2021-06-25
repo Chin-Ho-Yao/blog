@@ -12,9 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -59,6 +57,7 @@ public class BlogController {
         return "admin/blogs";/*blogs方法就是希望訪問到頁面就能看到博客管理頁面*/
     }
 
+    /*博客點擊新增，返回到博客新增頁面admin/blogs-input*/
     @GetMapping("/blogs/input")
     public String input(Model model){
         /*分類初始化*/
@@ -70,6 +69,24 @@ public class BlogController {
         /*初始化之後就可以在model拿到數據*/
         return INPUT;
     }
+
+    private  void setTypeAndTag(Model model){
+        model.addAttribute("types",typeService.listType());
+        model.addAttribute("tags",tagService.listTag());
+    }
+
+    @GetMapping("/blogs/{id}/input")
+    public String editInput(@PathVariable Long id, Model model){
+        setTypeAndTag(model);
+        Blog blog = blogService.getBlog(id);
+        /*初始化，把tagIds處理成字符串*/
+        blog.init();
+        /*初始化，修改的時候頁面要初始化取值，這樣就拿到tagIds*/
+        model.addAttribute("blog", blog);
+        /*初始化之後就可以在model拿到數據*/
+        return INPUT;
+    }
+
 
     @PostMapping("/blogs")
     public String post(Blog blog, RedirectAttributes attributes, HttpSession session){/*接收Blog對象，session有user用來設置blog*/
@@ -99,6 +116,12 @@ public class BlogController {
         return "admin/blogs :: blogList";
     }
 
+    @GetMapping("/blogs/{id}/delete")
+    public String delete(RedirectAttributes attributes,@PathVariable Long id){
+        blogService.deleteBlog(id);
+        attributes.addFlashAttribute("message","刪除成功");
+        return REDIRECT_LIST;
+    }
 
 
 }

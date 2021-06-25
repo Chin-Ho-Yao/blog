@@ -39,20 +39,31 @@ public class TagServiceImpl implements TagService{
     }
 
     @Override
+    public Tag getTagByName(String name) {
+        return tagRepository.findByName(name);
+    }
+
+    @Transactional
+    @Override
+    public Page<Tag> listTag(Pageable pageable) {
+        return tagRepository.findAll(pageable);/*分頁查詢，springboot就有jpa能用了，傳遞Pageable就會查詢封裝Page類型的對象*/
+    }
+
+    @Override
     public List<Tag> listTag() {
         return tagRepository.findAll();
     }
 
     @Override
     public List<Tag> listTag(String ids) {//現在id是1,2,3，所以把id轉換成字符串如下
-        return tagRepository.findAll();
+        return tagRepository.findAll(converToList(ids));
     }
 
     /*老師寫的方法*/
     private List<Long> converToList(String ids){
-        List<Long> list = new ArrayList<>(converToList(ids));
+        List<Long> list = new ArrayList<>();
         /*非空判斷*/
-        if("".equals(ids) && ids != null){
+        if(!"".equals(ids) && ids != null){
             /*把字串轉換成數組*/
             String[] idarray = ids.split(",");
             for (int i = 0;i < idarray.length;i++){
@@ -60,18 +71,6 @@ public class TagServiceImpl implements TagService{
             }
         }
         return list;
-    }
-
-    @Override
-    public Tag getTagByName(String name) {
-        return tagRepository.findByName(name);
-    }
-
-
-    @Transactional
-    @Override
-    public Page<Tag> listTag(Pageable pageable) {
-        return tagRepository.findAll(pageable);/*分頁查詢，springboot就有jpa能用了，傳遞Pageable就會查詢封裝Page類型的對象*/
     }
 
     @Transactional

@@ -43,8 +43,8 @@
 <div class="ui attached pointing menu"><!--attached依附上一個元件 pointing 有作用的會出現一個小pointing-->
   <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
     <div class="right menu"><!--讓發布與列表靠右邊-->
-      <a href="#" class="item">發布</a>
-      <a href="#" class="active item">博客管理</a>
+      <a href="#" th:href="@{/admin/blogs/input}" class="teal active item">發布</a>
+      <a href="#" th:href="@{/admin/blogs}" class="item">列表</a>
     </div>
   </div>
 </div>
@@ -54,12 +54,13 @@
   <div class="ui container"><!-- container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
     <form id="blog-form" action="#" th:object="${blog}" th:action="@{/admin/blogs}" method="post" class="ui form">
       <input type="hidden" name="published">
+      <input type="hidden" name="id" th:value="*{id}"><!--從blog拿id有值的話就給他-->
       <div class="required field"><!--required要求必須輸入，沒輸入會顯示紅色匡-->
         <div class="ui left labeled input">
 
-          <!--top標題格下拉選單-->
+          <!--blog標題格下拉選單-->
           <div class="ui selection compact dropdown teal basic label"><!--compact外匡適應文本大小-->
-            <input type="hidden" value="原創"><!--要選擇的東西先隱藏-->
+            <input type="hidden" value="原創" name="flag" th:value="*{flag}"><!--要選擇的東西先隱藏-->
             <i class="dropdown icon"><!--下拉選擇icon--></i>
             <div class="text">原創</div>
             <div class="menu"><!--做裡面內容-->
@@ -68,30 +69,23 @@
               <div class="item" data-value="翻譯">翻譯</div>
             </div>
           </div>
-          <input type="text" name="title" placeholder="標題">
+          <input type="text" name="title" placeholder="標題" th:value="*{title}">
         </div>
       </div>
       <div class="required field">
         <div id="md-content" style="z-index: 1 !important;">
-          <textarea name="content" placeholder="博客內容" style="display: none">
-            [TOC]
-#### Disabled options
-
-- TeX (Based on KaTeX);
-- Emoji;
-- Task lists;
-- HTML tags decode;
-- Flowchart and Sequence Diagram;
-          </textarea>
+          <textarea name="content" placeholder="博客內容" style="display: none" th:text="*{content}"></textarea>
         </div>
       </div>
-      <!--下方空格-->
+
+
       <div class="two fields">
+        <!--分類下拉表格-->
         <div class="required field">
           <div class="ui left labeled action input"><!--action可以讓前面標籤跟後面下拉匡沒有圓角的年再一起-->
             <label class="ui compact teal basic label">分類</label>
             <div class="ui fluid selection dropdown">
-              <input type="hidden" name="type.id">
+              <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}"><!--判斷type為空就不使用，不然用到空的會報錯-->
               <i class="dropdown icon"></i>
               <div class="default text">分類</div>
               <div class="menu">
@@ -103,6 +97,7 @@
         <div class="field">
           <div class="ui left labeled action input"><!--action可以讓前面標籤跟後面下拉匡沒有圓角的年再一起-->
             <label class="ui compact teal basic label">標籤</label>
+            <!--標籤選擇的下單選單-->
             <div class="ui fluid selection multiple search dropdown"><!--multiple search 允許選取多個標籤-->
               <input type="hidden" name="tagIds" th:value="*{tagIds}" >
               <i class="dropdown icon"></i>
@@ -118,7 +113,7 @@
       <div class="required field">
         <div class="ui left labeled input">
           <label class="ui teal basic label">首圖</label>
-          <input type="text" name="indexPicture" placeholder="首圖引用地址">
+          <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="首圖引用地址">
         </div>
       </div>
 
@@ -126,25 +121,25 @@
       <div class="inline fields"><!--這樣匡好下面的filed才會出現在同一行-->
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="recommend" name="recommend" checked class="hidden"><!--checked默認打勾hidden默認不選中-->
+            <input type="checkbox" id="recommend" name="recommend" checked th:checked="*{recommend}" class="hidden"><!--checked默認打勾hidden默認不選中-->
             <label for="recommend">推薦</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="shareStatement" name="shareStatement" class="hidden"><!--hidden默認不選中-->
+            <input type="checkbox" id="shareStatement" name="shareStatement" th:checked="*{shareStatement}" class="hidden"><!--hidden默認不選中-->
             <label for="shareStatement">轉載聲明</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="appreciation" name="appreciation" class="hidden"><!--hidden默認不選中-->
+            <input type="checkbox" id="appreciation" name="appreciation" th:checked="*{appreciation}" class="hidden"><!--hidden默認不選中-->
             <label for="appreciation">讚賞</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="commenttabled" name="commenttabled" class="hidden"><!--hidden默認不選中-->
+            <input type="checkbox" id="commenttabled" name="commenttabled" th:checked="*{commenttabled}" class="hidden"><!--hidden默認不選中-->
             <label for="commenttabled">評論</label>
           </div>
         </div>
@@ -236,6 +231,14 @@
     $('.ui.dropdown').dropdown({
         on: 'hover'
     });
+
+    // $('.ui.dropdown.tag ')
+    //         .dropdown({
+    //           allowAdditions: true
+    //         })
+    // ;
+
+
 /*表單驗證 identifier與表單內部值保持一定就可以了*/
     $('.ui.form').form({
         fields:{

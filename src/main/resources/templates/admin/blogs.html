@@ -43,8 +43,8 @@
 <div class="ui attached pointing menu"><!--attached依附上一個元件 pointing 有作用的會出現一個小pointing-->
     <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
         <div class="right menu"><!--讓發布與列表靠右邊-->
-            <a href="#" class="item">發布</a>
-            <a href="#" class="active item">列表</a>
+            <a href="#" th:href="@{/admin/blogs/input}" class="item">發布</a>
+            <a href="#" th:href="@{/admin/blogs}" class="teal active item">列表</a>
         </div>
     </div>
 </div>
@@ -119,15 +119,13 @@
                     <td th:text="${blog.type.name}">認知升級</td>
                     <!--是否推薦，這是布林值所以加入判斷-->
                     <td th:text="${blog.recommend} ? '是':'否'">是</td>
-                    <td th:text="${blog.published} ? '草稿':'發布'">草稿</td>
+                    <td th:text="${blog.published} ? '發布':'草稿'">草稿</td>
                     <!--更新時間-->
                     <td th:text="${blog.updateTime}">2021-05-24 13:14</td>
                     <td>
                         <!--根據blog id去刪除修改-->
-                        <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}"
-                           class="ui mini teal basic button">編輯</a>
-                        <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}"
-                           class="ui mini red basic button">刪除</a>
+                        <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}" class="ui mini teal basic button">編輯</a>
+                        <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button">刪除</a>
                     </td>
                 </tr>
                 </tbody>
