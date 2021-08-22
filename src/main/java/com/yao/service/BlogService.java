@@ -5,6 +5,8 @@ import com.yao.vo.BlogQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Created by Jack Yao on 2021/5/31 11:38 上午
  */
@@ -17,6 +19,11 @@ public interface BlogService {
     Page<Blog> listBlog(Pageable pageable, BlogQuery blog);
 
     Page<Blog> listBlog(Pageable pageable);
+
+    Page<Blog> listBlog(String query,Pageable pageable);
+
+    /*#37首頁最新推薦表格數據獲取*/
+    List<Blog> listRecommendBlogTop(Integer size);
 
     /*新增*/
     Blog saveBlog(Blog blog);

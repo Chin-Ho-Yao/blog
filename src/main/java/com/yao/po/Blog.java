@@ -26,7 +26,7 @@ public class Blog {
     private Integer views;              /*觀看數*/
     private boolean appreciation;       /*讚賞數*/
     private boolean shareStatement;     /*轉載聲明是否開啟*/
-    private boolean commenttabled;      /*評論開啟*/
+    private boolean commentabled;      /*評論開啟*/
     private boolean published;          /*是否發布*/
     private boolean recommend;          /*是否推薦*/
     @Temporal(TemporalType.TIMESTAMP)
@@ -50,13 +50,9 @@ public class Blog {
     @Transient
     private String tagIds;
 
-    public String getTagIds() {
-        return tagIds;
-    }
+    private String description;
 
-    public void setTagIds(String tagIds) {
-        this.tagIds = tagIds;
-    }
+
 
     public Blog() {}
 
@@ -124,12 +120,12 @@ public class Blog {
         this.shareStatement = shareStatement;
     }
 
-    public boolean isCommenttabled() {
-        return commenttabled;
+    public boolean isCommentabled() {
+        return commentabled;
     }
 
-    public void setCommenttabled(boolean commenttabled) {
-        this.commenttabled = commenttabled;
+    public void setCommentabled(boolean commentabled) {
+        this.commentabled = commentabled;
     }
 
     public boolean isPublished() {
@@ -196,6 +192,22 @@ public class Blog {
         this.comments = comments;
     }
 
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /*blog對象做一個初始化的方法*/
     public void init(){
         this.tagIds = tagsToIds(this.getTags());
@@ -231,11 +243,17 @@ public class Blog {
                 ", views=" + views +
                 ", appreciation=" + appreciation +
                 ", shareStatement=" + shareStatement +
-                ", commenttabled=" + commenttabled +
+                ", commentabled=" + commentabled +
                 ", published=" + published +
                 ", recommend=" + recommend +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", type=" + type +
+                ", tags=" + tags +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", tagIds='" + tagIds + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

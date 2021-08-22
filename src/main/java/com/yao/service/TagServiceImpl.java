@@ -56,17 +56,17 @@ public class TagServiceImpl implements TagService{
         return tagRepository.findAll();
     }
 
-    @Override
-    public List<Tag> listTag(String ids) {//現在id是1,2,3，所以把id轉換成字符串如下
-        return tagRepository.findAll(converToList(ids));
-    }
-
     /*index的tag處理*/
     @Override
     public List<Tag> listTagTop(Integer size) {
-        Sort sort = new Sort(Sort.Direction.DESC,"tags.size");/*sort由DESC排序依照tags.size*/
+        Sort sort = new Sort(Sort.Direction.DESC,"blogs.size");/*sort由DESC排序依照tags.size*/
         Pageable pageable = new PageRequest(0,size,sort);/*選擇第一頁的size按照sort排序*/
         return tagRepository.findTop(pageable);
+    }
+
+    @Override
+    public List<Tag> listTag(String ids) {//現在id是1,2,3，所以把id轉換成字符串如下
+        return tagRepository.findAll(converToList(ids));
     }
 
     /*老師寫的方法*/
