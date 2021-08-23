@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head th:replace="admin/_fragments :: head(~{::title})">
+
   <meta charset="UTF-8">
   <!--  移動端預覽設置  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
 <body>
 
 <!--導航-->
-<nav class="ui inverted attached segment m-padded-tb-mini">
+<nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">Blog</h2>
@@ -91,7 +92,8 @@
                   <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
                 </a>
               </div>
-            </div></div>
+            </div>
+          </div>
           <!--/*-->
           <div class="ui padded vertical segment m-padded-tb-large">
             <div class="ui mobile reversed stackable grid">

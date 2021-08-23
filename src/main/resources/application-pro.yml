@@ -6,8 +6,8 @@ spring:
     password: 11111111
   jpa:
     hibernate:
-      ddl-auto: none
-    show-sql: true
+#      ddl-auto: none
+      show-sql: true
 
 logging:
   level:
