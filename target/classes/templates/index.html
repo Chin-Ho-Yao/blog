@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head th:replace="admin/_fragments :: head(~{::title})">
+
   <meta charset="UTF-8">
   <!--  移動端預覽設置  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@
 <body>
 
 <!--導航-->
-<nav class="ui inverted attached segment m-padded-tb-mini">
+<nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">Blog</h2>
@@ -50,12 +51,50 @@
               <h3 class="ui teal header">博客</h3>
             </div>
             <div class="right aligned column">
-              共<h2 class="ui orange header m-inline-block m-text-thin">14</h2>篇
+              共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.totalElements}">14</h2>篇
             </div>
           </div>
         </div>
+
         <!--content-->
         <div class="ui attached segment">
+          <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
+            <div class="ui middle aligned mobile reversed stackable grid" >
+              <div class="ui eleven wide column ">
+                <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" class="m-black" th:text="${blog.title}">你真的理解什麼是財富自由嗎？</a></h3>
+                <p class="m-text" th:text="|${blog.description}......|">
+                  做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
+                <div class="ui grid ">
+                  <div class="eleven wide column">
+                    <div class="ui mini horizontal linked list">
+                      <div class="item">
+                        <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                        <div class="content"><a href="#" class="header " th:text="${blog.user.nickname}">姚欽和</a></div>
+                      </div>
+                      <div class="item">
+                        <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-mm-dd')}">2021-05-21</span>
+                      </div>
+                      <div class="item">
+                        <i class="eye icon" ></i><span th:text="${blog.views}">2345</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="right aligned five wide column">
+                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny" th:text="${blog.type.name}">認知升級</a>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="ui five wide column ">
+                <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                  <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
+                </a>
+              </div>
+            </div>
+          </div>
+          <!--/*-->
           <div class="ui padded vertical segment m-padded-tb-large">
             <div class="ui mobile reversed stackable grid">
               <div class="ui eleven wide column ">
@@ -204,54 +243,17 @@
               </div>
             </div>
           </div>
-          <div class="ui padded vertical segment m-padded-tb-large">
-            <div class="ui mobile reversed stackable grid">
-              <div class="ui eleven wide column ">
-                <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-                <p class="m-text">
-                  做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-                <div class="ui grid ">
-                  <div class="eleven wide column">
-                    <div class="ui mini horizontal linked list">
-                      <div class="item">
-                        <img src="https://unsplash.it/100/100?image=1005" alt=""
-                             class="ui avatar image">
-                        <div class="content"><a href="#" class="header ">姚欽和</a></div>
-                      </div>
-                      <div class="item">
-                        <i class="calendar icon"></i>2021-05-21<!--undone-->
-                      </div>
-                      <div class="item">
-                        <i class="eye icon"></i>2345<!--undone-->
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="right aligned five wide column">
-                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="ui five wide column ">
-                <a href="#" target="_blank">
-                  <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
-                </a>
-              </div>
-            </div>
-          </div>
-
+          <!--*/-->
 
         </div>
         <!--footer-->
-        <div class="ui bottom attached segment">
+        <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
           <div class="ui two column grid">
             <div class="ui left aligned column">
-              <a href="#" class="ui mini teal basic  button ">上一頁</a>
+              <a href="#" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class="ui mini teal basic  button ">上一頁</a>
             </div>
             <div class="ui right aligned column">
-              <a href="#" class="ui mini teal basic button ">下一頁</a>
+              <a href="#" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class="ui mini teal basic button ">下一頁</a>
             </div>
           </div>
         </div>
@@ -276,7 +278,12 @@
             </div>
           </div>
           <div class="ui teal segment ">
-            <div class="ui fluid vertical menu">
+            <div class="ui fluid vertical menu" >
+              <a href="#" class="item" th:each="type : ${types}"><!--#37each-->
+                <span th:text="${type.name}">學習日誌</span>
+                <div class="ui basic teal left pointing label" th:text="${#arrays.length(type.blogs)}">13</div>
+              </a>
+              <!--/*-->
               <a href="#" class="item">學習日誌
                 <div class="ui basic teal left pointing label">13</div>
               </a>
@@ -292,9 +299,7 @@
               <a href="#" class="item">學習日誌
                 <div class="ui basic teal left pointing label">13</div>
               </a>
-              <a href="#" class="item">學習日誌
-                <div class="ui basic teal left pointing label">13</div>
-              </a>
+              <!--*/-->
             </div>
           </div>
 
@@ -315,6 +320,11 @@
             </div>
           </div>
           <div class="ui teal segment">
+            <a href="#" target="_blank" class="ui basic teal left pointing label m-margin-tb-tiny" th:each="tag : ${tags}"><!--#37each-->
+              <span th:text="${tag.name}">方法論</span>
+              <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
+            </a>
+            <!--/*-->
             <a href="#" target="_blank" class="ui basic teal left pointing label m-margin-tb-tiny">
               方法論
               <div class="detail">23</div>
@@ -351,10 +361,7 @@
               方法論
               <div class="detail">23</div>
             </a>
-            <a href="#" target="_blank" class="ui basic teal left pointing label m-margin-tb-tiny">
-              方法論
-              <div class="detail">23</div>
-            </a>
+            <!--*/-->
           </div>
         </div>
 
@@ -363,6 +370,11 @@
           <div class="ui secondary segment ">
             <i class="idea icon"></i>最新推薦
           </div>
+          <div class="ui segment" th:each="blog : ${recommendBlogs}"><!--#37each-->
+            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="m-text-thin m-black" th:text="${blog.title}">用戶故事（User Story）</a>
+
+          </div>
+          <!--/*-->
           <div class="ui segment">
             <a href="#" target="_blank" class="m-text-thin m-black">用戶故事（User Story）</a>
           </div>
@@ -384,9 +396,7 @@
           <div class="ui segment">
             <a href="#" target="_blank" class="m-text-thin m-black">用戶故事（User Story）</a>
           </div>
-          <div class="ui segment">
-            <a href="#" target="_blank" class="m-text-thin m-black">用戶故事（User Story）</a>
-          </div>
+          <!--*/-->
         </div>
         <!--二維碼 -->
         <h4 class="ui horizontal divider header m-margin-large">掃碼關注我</h4>

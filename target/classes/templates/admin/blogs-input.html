@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head th:replace="admin/_fragments :: head(~{::title})">
   <meta charset="UTF-8">
   <!--  移動端預覽設置  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +8,13 @@
   <title>博客管理</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <!--    引入me.css來調整間距-->
-  <link rel="stylesheet" href="../../static/css/me.css">
-  <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css"><!--引入-->
+  <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+  <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}"><!--引入markdown編輯器-->
 </head>
 <body>
 
 <!--導航-->
-<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+<nav  th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">管理後台</h2>
@@ -43,21 +43,24 @@
 <div class="ui attached pointing menu"><!--attached依附上一個元件 pointing 有作用的會出現一個小pointing-->
   <div class="ui container"><!--讓二級導航靠中間一點別貼左邊-->
     <div class="right menu"><!--讓發布與列表靠右邊-->
-      <a href="#" class="item">發布</a>
-      <a href="#" class="active item">博客管理</a>
+      <a href="#" th:href="@{/admin/blogs/input}" class="teal active item">發布</a>
+      <a href="#" th:href="@{/admin/blogs}" class="item">列表</a>
     </div>
   </div>
 </div>
 
 <!--中間內容-->
-<div class="m-container-small m-padded-tb-big">
+<div class="m-container m-padded-tb-big">
   <div class="ui container"><!-- container能根據螢幕在不同裝置達到最適應的空間效果，用它來包裹元素-->
-    <form action="#" method="post" class="ui form">
+    <form id="blog-form" action="#" th:object="${blog}" th:action="@{/admin/blogs}" method="post" class="ui form">
+      <input type="hidden" name="published">
+      <input type="hidden" name="id" th:value="*{id}"><!--從blog拿id有值的話就給他-->
       <div class="required field"><!--required要求必須輸入，沒輸入會顯示紅色匡-->
         <div class="ui left labeled input">
-          <!--下拉選單-->
+
+          <!--blog標題格下拉選單-->
           <div class="ui selection compact dropdown teal basic label"><!--compact外匡適應文本大小-->
-            <input type="hidden" value="原創"><!--要選擇的東西先隱藏-->
+            <input type="hidden" value="原創" name="flag" th:value="*{flag}"><!--要選擇的東西先隱藏-->
             <i class="dropdown icon"><!--下拉選擇icon--></i>
             <div class="text">原創</div>
             <div class="menu"><!--做裡面內容-->
@@ -66,35 +69,27 @@
               <div class="item" data-value="翻譯">翻譯</div>
             </div>
           </div>
-          <input type="text" name="title" placeholder="標題">
+          <input type="text" name="title" placeholder="標題" th:value="*{title}">
         </div>
       </div>
-      <div class="field">
+      <div class="required field">
         <div id="md-content" style="z-index: 1 !important;">
-          <textarea name="content" placeholder="博客內容" style="display: none">
-            [TOC]
-#### Disabled options
-
-- TeX (Based on KaTeX);
-- Emoji;
-- Task lists;
-- HTML tags decode;
-- Flowchart and Sequence Diagram;
-          </textarea>
+          <textarea name="content" placeholder="博客內容" style="display: none" th:text="*{content}"></textarea>
         </div>
       </div>
-      <!--下方空格-->
+
+
       <div class="two fields">
-        <div class="field">
+        <!--分類下拉表格-->
+        <div class="required field">
           <div class="ui left labeled action input"><!--action可以讓前面標籤跟後面下拉匡沒有圓角的年再一起-->
             <label class="ui compact teal basic label">分類</label>
             <div class="ui fluid selection dropdown">
-              <input type="hidden" name="type">
+              <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}"><!--判斷type為空就不使用，不然用到空的會報錯-->
               <i class="dropdown icon"></i>
               <div class="default text">分類</div>
               <div class="menu">
-                <div class="item" data-value="1">錯誤日誌</div>
-                <div class="item" data-value="2">開發者手冊</div>
+                <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">錯誤日誌</div><!--data-value是傳到後端的值-->
               </div>
             </div>
           </div>
@@ -102,50 +97,50 @@
         <div class="field">
           <div class="ui left labeled action input"><!--action可以讓前面標籤跟後面下拉匡沒有圓角的年再一起-->
             <label class="ui compact teal basic label">標籤</label>
+            <!--標籤選擇的下單選單-->
             <div class="ui fluid selection multiple search dropdown"><!--multiple search 允許選取多個標籤-->
-              <input type="hidden" name="type">
+              <input type="hidden" name="tagIds" th:value="*{tagIds}" >
               <i class="dropdown icon"></i>
               <div class="default text">標籤</div>
               <div class="menu">
-                <div class="item" data-value="1">Java</div>
-                <div class="item" data-value="2">JavaScrpit</div>
+                <div th:each="tag : ${tags}" class="item" data-value="1" th:data-value="${tag.id}" th:text="${tag.name}">Java</div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!--首圖引用地址-->
-      <div class="field">
+      <div class="required field">
         <div class="ui left labeled input">
           <label class="ui teal basic label">首圖</label>
-          <input type="text" name="indexPicture" placeholder="首圖引用地址">
+          <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="首圖引用地址">
         </div>
       </div>
 
-      <!--放一行-->
+      <!--打勾box放一行-->
       <div class="inline fields"><!--這樣匡好下面的filed才會出現在同一行-->
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="recommend" name="recommend" checked class="hidden"><!--checked默認打勾hidden默認不選中-->
+            <input type="checkbox" id="recommend" name="recommend" checked th:checked="*{recommend}" class="hidden"><!--checked默認打勾hidden默認不選中-->
             <label for="recommend">推薦</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="shareInfo" name="shareInfo" class="hidden"><!--hidden默認不選中-->
-            <label for="shareInfo">轉載聲明</label>
+            <input type="checkbox" id="shareStatement" name="shareStatement" th:checked="*{shareStatement}" class="hidden"><!--hidden默認不選中-->
+            <label for="shareStatement">轉載聲明</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="appreciation" name="appreciation" class="hidden"><!--hidden默認不選中-->
+            <input type="checkbox" id="appreciation" name="appreciation" th:checked="*{appreciation}" class="hidden"><!--hidden默認不選中-->
             <label for="appreciation">讚賞</label>
           </div>
         </div>
         <div class="field">
           <div class="ui checkbox">
-            <input type="checkbox" id="comment" name="comment" class="hidden"><!--hidden默認不選中-->
-            <label for="comment">評論</label>
+            <input type="checkbox" id="commentabled" name="commentabled" th:checked="*{commentabled}" class="hidden"><!--hidden默認不選中-->
+            <label for="commentabled">評論</label>
           </div>
         </div>
       </div>
@@ -157,8 +152,8 @@
       <div class="ui right aligned container">
         <button type="button" class="ui button" onclick="window.history.go(-1)">返回
         </button><!--type不給指定值他會默認submit 所以這邊用button onclick那串就是返回上一頁-->
-        <button class="ui secondary button">保存</button><!--secondary優先級第二默認黑色-->
-        <button class="ui teal button">發布</button>
+        <button type="button" id="save-btn" class="ui secondary button">保存</button><!--secondary優先級第二默認黑色-->
+        <button type="button" id="publish-btn" class="ui teal button">發布</button>
       </div>
 
     </form>
@@ -166,7 +161,7 @@
 </div>
 
 <!--底部footer-->
-<footer class=" vertical inverted segment ui m-padded-tb-massive">
+<footer th:replace="admin/_fragments :: footer" class=" vertical inverted segment ui m-padded-tb-massive">
   <div class="ui center aligned container">
     <div class=" ui inverted divided stackable grid">
       <div class="three wide column">
@@ -202,7 +197,7 @@
 <!--字元引入-->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-<script src="../../static/lib/editormd/editormd.min.js"></script><!--字元引入-->
+<script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script><!--字元引入-->
 <script>
     /*初始化MarkDown編輯器*/
     var contentEditor;
@@ -211,8 +206,20 @@
             width   : "100%",/*編輯器寬度*/
             height  : 640,
             syncScrolling : "single",/*滾動槽*/
-            path    : "../static/lib/editormd/lib/"/*路徑一定要對*/
+            path    : "/lib/editormd/lib/"/*路徑一定要對，thymeleaf模板就不用指定路徑*/
         });
+    });
+
+    /*保存button響應事件，id爲blog-form的單個元素。*/
+    $('#save-btn').click(function(){
+      $('[name="published"]').val(false);
+      $('#blog-form').submit();
+    });
+
+    /*發布button響應事件，點擊時給予true*/
+    $('#publish-btn').click(function(){
+      $('[name="published"]').val(true);
+      $('#blog-form').submit();
     });
 
 
@@ -224,6 +231,14 @@
     $('.ui.dropdown').dropdown({
         on: 'hover'
     });
+
+    // $('.ui.dropdown.tag ')
+    //         .dropdown({
+    //           allowAdditions: true
+    //         })
+    // ;
+
+
 /*表單驗證 identifier與表單內部值保持一定就可以了*/
     $('.ui.form').form({
         fields:{
@@ -233,7 +248,28 @@
                     type:'empty',/*類型*/
                     prompt:'標題：請輸入博客標題'/*提示內容*/
                 }]
-            }
+            },
+          content: {
+            identifier: 'content',/*博客內容*/
+            rules: [{/*驗證規則，可指定多個值*/
+              type: 'empty',/*類型*/
+              prompt: '標題：請輸入博客內容'/*提示內容*/
+            }]
+          },
+          typeId: {
+            identifier: 'typeId',/*博客分類*/
+            rules: [{/*驗證規則，可指定多個值*/
+              type: 'empty',/*類型*/
+              prompt: '標題：請輸入博客分類'/*提示內容*/
+            }]
+          },
+          firstPicture: {
+            identifier: 'firstPicture',/*博客分類*/
+            rules: [{/*驗證規則，可指定多個值*/
+              type: 'empty',/*類型*/
+              prompt: '標題：請輸入博客首圖'/*提示內容*/
+            }]
+          }
         }
     });
 

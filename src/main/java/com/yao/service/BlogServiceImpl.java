@@ -3,6 +3,7 @@ package com.yao.service;
 import com.yao.dao.BlogRepository;
 import com.yao.po.Blog;
 import com.yao.po.Type;
+import com.yao.util.MarkdownUtils;
 import com.yao.util.MyBeanUtils;
 import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
@@ -40,6 +41,19 @@ public class BlogServiceImpl implements BlogService{
 
         /*查詢主鍵id，查詢對象返回*/
         return blogRepository.findOne(id);
+    }
+
+    @Override
+    public Blog getAndConvert(Long id) {
+        Blog blog = blogRepository.findOne(id);
+        if(blog == null){
+            throw new NotFoundException("該博客不存在");
+        }
+        Blog b = new Blog();
+        BeanUtils.copyProperties(blog,b);
+        String content = b.getContent();
+        b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        return b;
     }
 
     /*分頁動態查詢方式，較複雜最後處理*/

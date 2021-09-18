@@ -48,33 +48,32 @@
     <div class="ui top attached segment ">
       <div class="ui horizontal linked list">
         <div class="item">
-          <img src="https://unsplash.it/100/100?image=1005" alt=""
-               class="ui avatar image">
-          <div class="content">
-            <a href="#" class="header ">姚欽和</a>
+          <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+          <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">姚欽和</a>
           </div>
         </div>
         <div class="item">
-          <i class="calendar icon"></i>2021-05-21<!--undone-->
+          <i class="calendar icon" ></i><span th:text="${#dates.format(blog.updateTime,'yyyy-mm-dd')}">2021-05-21</span>
         </div>
         <div class="item">
-          <i class="eye icon"></i>2345<!--undone-->
+          <i class="eye icon"></i><span th:text="${blog.views}">2345</span>
         </div>
       </div>
     </div>
     <!--圖片區域-->
     <div class="ui attached segment">
-      <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui fluid rounded image">
+      <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui fluid rounded image">
     </div>
 
     <!--內容-->
     <div class="ui attached padded segment">
       <div class="ui right aligned basic segment">
-        <div class="ui label basic orange ">轉載</div>
+        <div class="ui label basic orange " th:text="${blog.flag}">原創</div>
       </div>
-      <h2 class="ui center aligned header">失敗要趁早</h2>
+      <h2 class="ui center aligned header" th:text="${blog.title}">失敗要趁早</h2>
       <br>
-      <div id="content" class="typo typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large">
+      <!--中間主要內容部分-->
+      <div id="content" class="typo typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large" th:utext="${blog.content}">
         <h2 id="section1">一、关于 <i class="serif">Typo.css</i></h2>
 
         <pre><code class="language-css">p { color: red }</code></pre><!--高亮顯示-->
@@ -82,7 +81,7 @@
         <p><i class="serif">Typo.css</i> 的目的是，在一致化浏览器排版效果的同时，构建最适合中文阅读的网页排版。</p>
         <h4>现状和如何去做：</h4>
 
-        <p class="typo-first">排版是一个麻烦的问题 <sup><a href="#appendix1"># 附录一</a></sup>，需要精心设计，而这个设计却是常被视觉设计师所忽略的。前端工程师更常看到这样的问题，但不便变更。因为在多个
+        <p class="typo-first">排版是一个麻烦的问题 <sup><a href="# appendix1"># 附录一</a></sup>，需要精心设计，而这个设计却是常被视觉设计师所忽略的。前端工程师更常看到这样的问题，但不便变更。因为在多个
           OS 中的不同浏览器渲染不同，改动需要多的时间做回归测试，所以改变变得更困难。而像我们一般使用的
           Yahoo、Eric Meyer 和 Alice base.css 中采用的 Reset 都没有很好地考虑中文排版。<i class="serif">Typo.css</i> 要做的就是解决中文排版的问题。</p>
 
@@ -462,7 +461,7 @@ h5,h6{font-size:1em;}
 
       <!--標籤-->
       <div class="m-padded-lr-responsive">
-        <div class="ui basic teal left pointing label">方法論</div>
+        <div class="ui basic teal left pointing label" th:each="tag:${blog.tags}" th:text="${tag.name}">方法論</div>
       </div>
 
       <!--讚賞-->
@@ -496,8 +495,9 @@ h5,h6{font-size:1em;}
       <div class="ui middle aligned grid">
         <div class="eleven wide column">
           <ui class="list">
-            <li>作者：姚欽和（联系作者）</li>
-            <li>发表时间：2021-05-22 17:58</li>
+            <li>作者：<span th:text="${blog.user.nickname}">姚欽和</span><a href="#" th:href="@{/about}" target="_blank">（联系作者）</a></li>
+
+            <li>发表时间：<span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}">2021-05-22 17:58</span></li>
             <li>版权声明：自由转载-非商用-非衍生-保持署名（创意共享3.0许可证)</li>
             <li>公众号转载：请在文末添加作者公众号二维码</li>
           </ui>
@@ -510,90 +510,98 @@ h5,h6{font-size:1em;}
     </div>
 
 
-    <div id="comment-container" class="ui bottom attached segment">
+    <div class="ui bottom attached segment">
       <!--留言區域列表-->
-      <div class="ui comments">
-        <h3 class="ui dividing header">Comments</h3>
-        <div class="comment">
-          <a class="avatar">
-            <img src="https://unsplash.it/100/100?image=1005" alt>
-          </a>
-          <div class="content">
-            <a class="author">Matt</a>
-            <div class="metadata">
-              <span class="date">Today at 5:42PM</span>
+      <div id="comment-container" class="ui teal segment">
+        <div th:fragment="commentList">
+          <div class="ui threaded comments" style="max-width: 100%">
+            <h3 class="ui dividing header">評論</h3>
+            <div class="comment">
+              <a class="avatar">
+                <img src="https://unsplash.it/100/100?image=1005" alt>
+              </a>
+              <div class="content">
+                <a class="author">Matt</a>
+                <div class="metadata">
+                  <span class="date">Today at 5:42PM</span>
+                </div>
+                <div class="text">
+                  How artistic!
+                </div>
+                <div class="actions">
+                  <a class="reply" data-commentid="1" data-commentnickname="Matt" onclick="reply(this)">回覆</a>
+                </div>
+              </div>
             </div>
-            <div class="text">
-              How artistic!
-            </div>
-            <div class="actions">
-              <a class="reply">回覆</a>
-            </div>
-          </div>
-        </div>
-        <div class="comment">
-          <a class="avatar">
-            <img src="https://unsplash.it/100/100?image=1005" alt="">
-          </a>
-          <div class="content">
-            <a class="author">Elliot Fu</a>
-            <div class="metadata">
-              <span class="date">Yesterday at 12:30AM</span>
-            </div>
-            <div class="text">
-              <p>This has been very useful for my research. Thanks as well!</p>
-            </div>
-            <div class="actions">
-              <a class="reply">回覆</a>
-            </div>
-          </div>
-          <div class="comments">
             <div class="comment">
               <a class="avatar">
                 <img src="https://unsplash.it/100/100?image=1005" alt="">
               </a>
               <div class="content">
-                <a class="author">Jenny Hess</a>
+                <a class="author">Elliot Fu</a>
                 <div class="metadata">
-                  <span class="date">Just now</span>
+                  <span class="date">Yesterday at 12:30AM</span>
                 </div>
                 <div class="text">
-                  Elliot you are always so right :)
+                  <p>This has been very useful for my research. Thanks as well!</p>
+                </div>
+                <div class="actions">
+                  <a class="reply">回覆</a>
+                </div>
+              </div>
+              <div class="comments">
+                <div class="comment">
+                  <a class="avatar">
+                    <img src="https://unsplash.it/100/100?image=1005" alt="">
+                  </a>
+                  <div class="content">
+                    <a class="author">Jenny Hess</a>
+                    <div class="metadata">
+                      <span class="date">Just now</span>
+                    </div>
+                    <div class="text">
+                      Elliot you are always so right :)
+                    </div>
+                    <div class="actions">
+                      <a class="reply">回覆</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <a class="avatar">
+                <img src="https://unsplash.it/100/100?image=1005" alt="">
+              </a>
+              <div class="content">
+                <a class="author">Joe Henderson</a>
+                <div class="metadata">
+                  <span class="date">5 days ago</span>
+                </div>
+                <div class="text">
+                  Dude, this is awesome. Thanks so much
                 </div>
                 <div class="actions">
                   <a class="reply">回覆</a>
                 </div>
               </div>
             </div>
+            <form class="ui reply form">
+              <div class="field">
+                <textarea></textarea>
+              </div>
+              <div class="ui blue labeled submit icon button">
+                <i class="icon edit"></i> Add 回覆
+              </div>
+            </form>
           </div>
         </div>
-        <div class="comment">
-          <a class="avatar">
-            <img src="https://unsplash.it/100/100?image=1005" alt="">
-          </a>
-          <div class="content">
-            <a class="author">Joe Henderson</a>
-            <div class="metadata">
-              <span class="date">5 days ago</span>
-            </div>
-            <div class="text">
-              Dude, this is awesome. Thanks so much
-            </div>
-            <div class="actions">
-              <a class="reply">回覆</a>
-            </div>
-          </div>
-        </div>
-        <form class="ui reply form">
-          <div class="field">
-            <textarea></textarea>
-          </div>
-          <div class="ui blue labeled submit icon button">
-            <i class="icon edit"></i> Add 回覆
-          </div>
-        </form>
       </div>
-      <div class="ui form">
+
+      <!--評論-->
+      <div id="comment-form" class="ui form">
+        <input type="text" name="blog.id" th:value="${blog.id}">
+        <input type="text" name="parentComment.id" value="-1">
         <div class="field">
           <textarea name="content" placeholder="請輸入評論訊息...."></textarea>
         </div>
@@ -611,7 +619,7 @@ h5,h6{font-size:1em;}
             </div>
           </div>
           <div class="field  m-margin-bottom-small m-mobile-wide">
-            <button class="ui teal button m-mobile-wide"><i class="edit icon"></i>發布</button>
+            <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>發布</button>
           </div>
         </div>
       </div>
@@ -688,7 +696,7 @@ h5,h6{font-size:1em;}
 
 
 
-<script>
+<script th:inline="javascript">
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide')
     })
@@ -720,8 +728,10 @@ h5,h6{font-size:1em;}
         position: 'left center'
     });
 
+    var serurl = "127.0.0.1:8080";
+    var url = /*[[@{blog/{id}(id=${blog.id})}]]*/"";
     var qrcode = new QRCode("qrcode", {/*這邊的test就是放id*/
-        text: "http://jindo.dev.naver.com/collie",
+        text: serurl+url,
         width: 110,
         height: 110,
         colorDark : "#000000",
@@ -745,6 +755,74 @@ h5,h6{font-size:1em;}
             console.log('Scrolled to waypoint!' + direction)
         }
     });
+
+    //評論表單驗證
+    $('.ui.form').form({
+        fields:{
+            title:{
+                identifier:'content',
+                rules:[{
+                    type:'empty',
+                    prompt:'請輸入評論內容'
+                }]
+            },
+            content:{
+                identifier:'nickname',
+                rules:[{
+                    type:'empty',
+                    prompt:'請輸入你的大名'
+                }]
+            },
+            type:{
+                identifier:'email',
+                rules:[{
+                    type:'email',
+                    prompt:'請輸入正確的郵箱地址'
+                }]
+            }
+        }
+    });
+
+
+
+    $('#commentpost-btn').click(function() {
+      var boo = $('.ui.form').form('validate form');
+      if (boo){
+        console.log('校驗成功');
+      }else{
+        console.log('校驗失敗')
+      }
+    });
+
+    function postData() {
+      $("#comment-container").load(/*[[@{/comments}]]*/"",{
+        "parentComment.id" : $("[name='parentComment.id']").val(),
+        "blog.id" : $("[name='blog.id']").val(),
+        "nickname" : $("[name='nickname']").val(),
+        "email" : $("[name='email']").val(),
+        "content" : $("[name='content']").val()
+      },function (responseTxt, statusTxt, xhr){
+        $(window).scrollTo($('#comment-container'),500);
+        clearContent();
+      });
+    }
+
+    function clearContent(){
+      $("[name='content']").val('');
+      $("[name='parentComment.id']").val(-1);
+
+    }
+
+    function reply(obj){
+      var commentId = $(obj).data('commentid');
+      var commentNickname = $(obj).data('commentnickname');
+      $("[name='content']").attr("placeholder","@"+commentNickname).focus();
+      $("[name='parentComment.id']").val(commentId);
+      $(window).scrollTo($('#comment-form'),500);
+
+    }
+
+
 </script>
 </body>
 </html>

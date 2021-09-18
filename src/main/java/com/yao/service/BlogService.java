@@ -14,6 +14,8 @@ public interface BlogService {
     /*根據id查詢Blog*/
     Blog getBlog(Long id);
 
+    Blog getAndConvert(Long id);
+
     /*分頁查詢，返回一個Page對象，Blog類型，list表查詢一組數據*/
     /*查詢要傳遞的參數。除了pageable，還有查詢時送出的參數（封裝成Blog）*/
     Page<Blog> listBlog(Pageable pageable, BlogQuery blog);

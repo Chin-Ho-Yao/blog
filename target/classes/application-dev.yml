@@ -8,10 +8,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+      show-sql: true
 
 logging:
   level:
     root: info
     com.lrm: debug
   file: log/blog-dev.log
+
