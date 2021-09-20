@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <!--  移動端預覽設置  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--  /移動端預覽設置  -->
   <title>博客詳情</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <!--    引入me.css來調整間距-->
@@ -18,7 +17,7 @@
 <body>
 
 <!--導航-->
-<nav th:replace="_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini ">
+<nav th:replace="_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini ">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">Blog</h2>
@@ -30,7 +29,6 @@
       <div class="right m-item item m-mobile-hide">
         <div class="ui icon transparent inverted input ">
           <input type="text" placeholder="Search...">
-
           <i class="search link icon"></i>
         </div>
       </div>
@@ -151,7 +149,7 @@
         <h4>中文排版的重点和难点</h4>
 
         <p>在中文排版中，HTML4 的很多标准在语义在都有照顾到。但从视觉效果上，却很难利用单独的 CSS 来实现，像<abbr title="在文字下多加一个点">着重号</abbr>（例：这里<em
-          class="typo-em">强调一下</em>）。在 HTML4 中，专名号标签（<code>&lt;u&gt;</code>）已经被放弃，而
+                class="typo-em">强调一下</em>）。在 HTML4 中，专名号标签（<code>&lt;u&gt;</code>）已经被放弃，而
           HTML5 被<a href="//html5doctor.com/u-element/">重新提起</a>。<i class="serif">Typo.css</i>
           也根据实际情况提供相应的方案。我们重要要注意的两点是：</p>
         <ol>
@@ -167,9 +165,9 @@
           <i class="serif">Typo.css</i>
           的开发。加入方法：<a href="https://github.com/sofish/Typo.css">参与 <i class="serif">Typo.css</i> 开发</a>。如有批评、建议和意见，也随时欢迎给在
           Github 直接提 <a
-            href="https://github.com/sofish/Typo.css/issues">issues</a>，或给<abbr title="Sofish Lin, author of Typo.css"
-                                                                                role="author">我</abbr>发<a
-            href="mailto:sofish@icloud.com">邮件</a>。</p>
+                  href="https://github.com/sofish/Typo.css/issues">issues</a>，或给<abbr title="Sofish Lin, author of Typo.css"
+                                                                                      role="author">我</abbr>发<a
+                  href="mailto:sofish@icloud.com">邮件</a>。</p>
 
 
         <h2 id="section2">二、排版实例：</h2>
@@ -202,7 +200,7 @@
         <h4>评析</h4>
 
         <p>宋代著名学者<u class="typo-u">朱熹</u>对此章评价极高，说它是「入道之门，积德之基」。本章这三句话是人们非常熟悉的。历来的解释都是：学了以后，又时常温习和练习，不也高兴吗等等。三句话，一句一个意思，前后句子也没有什么连贯性。但也有人认为这样解释不符合原义，指出这里的「学」不是指学习，而是指学说或主张；「时」不能解为时常，而是时代或社会的意思，「习」不是温习，而是使用，引申为采用。而且，这三句话不是孤立的，而是前后相互连贯的。这三句的意思是：自己的学说，要是被社会采用了，那就太高兴了；退一步说，要是没有被社会所采用，可是很多朋友赞同<abbr
-          title="张燕婴">我</abbr>的学说，纷纷到我这里来讨论问题，我也感到快乐；再退一步说，即使社会不采用，人们也不理解我，我也不怨恨，这样做，不也就是君子吗？（见《齐鲁学刊》1986年第6期文）这种解释可以自圆其说，而且也有一定的道理，供读者在理解本章内容时参考。
+                title="张燕婴">我</abbr>的学说，纷纷到我这里来讨论问题，我也感到快乐；再退一步说，即使社会不采用，人们也不理解我，我也不怨恨，这样做，不也就是君子吗？（见《齐鲁学刊》1986年第6期文）这种解释可以自圆其说，而且也有一定的道理，供读者在理解本章内容时参考。
         </p>
 
         <p>
@@ -461,7 +459,7 @@ h5,h6{font-size:1em;}
 
       <!--標籤-->
       <div class="m-padded-lr-responsive">
-        <div class="ui basic teal left pointing label" th:each="tag:${blog.tags}" th:text="${tag.name}">方法論</div>
+        <div class="ui basic teal left pointing label" th:each="tag : ${blog.tags}" th:text="${tag.name}">方法論</div>
       </div>
 
       <!--讚賞-->
@@ -515,24 +513,27 @@ h5,h6{font-size:1em;}
       <div id="comment-container" class="ui teal segment">
         <div th:fragment="commentList">
           <div class="ui threaded comments" style="max-width: 100%">
-            <h3 class="ui dividing header">評論</h3>
-            <div class="comment">
+            <h3 class="ui dividing header">評論123</h3>
+            <div class="comment" th:each="comment : ${comments}">
               <a class="avatar">
-                <img src="https://unsplash.it/100/100?image=1005" alt>
+                <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
               </a>
               <div class="content">
-                <a class="author">Matt</a>
+                <a class="author" >
+                  <span th:text="${comment.nickname}">Matt</span>
+                </a>
                 <div class="metadata">
-                  <span class="date">Today at 5:42PM</span>
+                  <span class="date" th:text="${#dates.format(comment.createTime, 'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
                 </div>
-                <div class="text">
+                <div class="text" th:text="${comment.content}">
                   How artistic!
                 </div>
                 <div class="actions">
-                  <a class="reply" data-commentid="1" data-commentnickname="Matt" onclick="reply(this)">回覆</a>
+                  <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回覆</a>
                 </div>
               </div>
             </div>
+            <!--/*-->
             <div class="comment">
               <a class="avatar">
                 <img src="https://unsplash.it/100/100?image=1005" alt="">
@@ -586,14 +587,8 @@ h5,h6{font-size:1em;}
                 </div>
               </div>
             </div>
-            <form class="ui reply form">
-              <div class="field">
-                <textarea></textarea>
-              </div>
-              <div class="ui blue labeled submit icon button">
-                <i class="icon edit"></i> Add 回覆
-              </div>
-            </form>
+            <!--*/-->
+
           </div>
         </div>
       </div>
@@ -609,13 +604,13 @@ h5,h6{font-size:1em;}
           <div class="field m-mobile-wide m-margin-bottom-small">
             <div class="ui left icon input">
               <i class="user icon"></i>
-              <input type="text" name="nickname" placeholder="姓名">
+              <input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.nickname}">
             </div>
           </div>
           <div class="field m-mobile-wide m-margin-bottom-small">
             <div class="ui left icon input">
               <i class="mail icon"></i>
-              <input type="text" name="email" placeholder="信箱">
+              <input type="text" name="email" placeholder="信箱" th:value="${session.user}!=null ? ${session.user.email}">
             </div>
           </div>
           <div class="field  m-margin-bottom-small m-mobile-wide">
@@ -642,9 +637,9 @@ h5,h6{font-size:1em;}
 </div>
 <!--要彈出的二維碼圖，放哪都可以-->
 <div id="qrcode" class="ui line-qr flowing popup transition hidden " style="width: 130px !important;">
-<!--
-  <img src="./images/footerQrcode.png" alt="" class="ui rounded image" style="width: 150px">
--->
+  <!--
+    <img src="./images/footerQrcode.png" alt="" class="ui rounded image" style="width: 150px">
+  -->
 </div>
 
 
@@ -697,131 +692,136 @@ h5,h6{font-size:1em;}
 
 
 <script th:inline="javascript">
-    $('.menu.toggle').click(function () {
-        $('.m-item').toggleClass('m-mobile-hide')
-    })
-    $('#payButton').popup({
-        popup: $('.payQR.popup'),
-        on: 'click',
-        position: 'bottom center'
-    });
+  $('.menu.toggle').click(function () {
+    $('.m-item').toggleClass('m-mobile-hide')
+  })
+  $('#payButton').popup({
+    popup: $('.payQR.popup'),
+    on: 'click',
+    position: 'bottom center'
+  });
 
-    /*初始化#18$2020*/
-    tocbot.init({
-        // Where to render the table of contents.
-        tocSelector: '.js-toc',/*通過css選中，也可以用id*/
-        // Where to grab the headings to build the table of contents.
-        contentSelector: '.js-toc-content',/*生成目錄內容的源頭*/
-        // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3',/*生成的標題級別，這邊最多三級*/
-        // For headings inside relative or absolute positioned containers within content.
-        hasInnerContainers: true,
-    });
+  /*初始化#18$2020*/
+  tocbot.init({
+    // Where to render the table of contents.
+    tocSelector: '.js-toc',/*通過css選中，也可以用id*/
+    // Where to grab the headings to build the table of contents.
+    contentSelector: '.js-toc-content',/*生成目錄內容的源頭*/
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: 'h1, h2, h3',/*生成的標題級別，這邊最多三級*/
+    // For headings inside relative or absolute positioned containers within content.
+    hasInnerContainers: true,
+  });
 
-    $('.toc.button').popup({
-        popup: $('.toc-container.popup'),
-        on: 'click',
-        position: 'left center'
-    });
-    $('.line').popup({
-        popup: $('.line-qr.popup'),
-        position: 'left center'
-    });
+  $('.toc.button').popup({
+    popup: $('.toc-container.popup'),
+    on: 'click',
+    position: 'left center'
+  });
+  $('.line').popup({
+    popup: $('.line-qr.popup'),
+    position: 'left center'
+  });
 
-    var serurl = "127.0.0.1:8080";
-    var url = /*[[@{blog/{id}(id=${blog.id})}]]*/"";
-    var qrcode = new QRCode("qrcode", {/*這邊的test就是放id*/
-        text: serurl+url,
-        width: 110,
-        height: 110,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+  var serurl = "127.0.0.1:8080";
+  var url = /*[[@{blog/{id}(id=${blog.id})}]]*/"";
+  var qrcode = new QRCode("qrcode", {/*這邊的test就是放id*/
+    text: serurl+url,
+    width: 110,
+    height: 110,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+  });
 
-    $('#toTop-button').click(function (){/*toTop-button是id前面有設定*/
-        $(window).scrollTo(0,500)/*0就是滾動到頂，500是間隔時間拿來控制速度*/
-    });
+  $('#toTop-button').click(function (){/*toTop-button是id前面有設定*/
+    $(window).scrollTo(0,500)/*0就是滾動到頂，500是間隔時間拿來控制速度*/
+  });
 
-    var waypoint = new Waypoint({
-        element: document.getElementById('waypoint'),/*監測哪個滾動，主要內容最外面的*/
-        handler: function(direction) {/*滾動方向*/
-            if (direction == 'down'){
-              $('#toolbar').show(500)
-            }else{
-                $('#toolbar').hide(500);/*hide括號為時間間隔*/
-            }
-
-            console.log('Scrolled to waypoint!' + direction)
-        }
-    });
-
-    //評論表單驗證
-    $('.ui.form').form({
-        fields:{
-            title:{
-                identifier:'content',
-                rules:[{
-                    type:'empty',
-                    prompt:'請輸入評論內容'
-                }]
-            },
-            content:{
-                identifier:'nickname',
-                rules:[{
-                    type:'empty',
-                    prompt:'請輸入你的大名'
-                }]
-            },
-            type:{
-                identifier:'email',
-                rules:[{
-                    type:'email',
-                    prompt:'請輸入正確的郵箱地址'
-                }]
-            }
-        }
-    });
-
-
-
-    $('#commentpost-btn').click(function() {
-      var boo = $('.ui.form').form('validate form');
-      if (boo){
-        console.log('校驗成功');
+  var waypoint = new Waypoint({
+    element: document.getElementById('waypoint'),/*監測哪個滾動，主要內容最外面的*/
+    handler: function(direction) {/*滾動方向*/
+      if (direction == 'down'){
+        $('#toolbar').show(500)
       }else{
-        console.log('校驗失敗')
+        $('#toolbar').hide(500);/*hide括號為時間間隔*/
       }
+
+      console.log('Scrolled to waypoint!' + direction)
+    }
+  });
+
+  //評論表單驗證
+  $('.ui.form').form({
+    fields:{
+      title:{
+        identifier:'content',
+        rules:[{
+          type:'empty',
+          prompt:'請輸入評論內容'
+        }]
+      },
+      content:{
+        identifier:'nickname',
+        rules:[{
+          type:'empty',
+          prompt:'請輸入你的大名'
+        }]
+      },
+      type:{
+        identifier:'email',
+        rules:[{
+          type:'email',
+          prompt:'請輸入正確的郵箱地址'
+        }]
+      }
+    }
+  });
+
+  $(function () {
+    $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+  });
+
+
+  $('#commentpost-btn').click(function() {
+    var boo = $('.ui.form').form('validate form');
+    if (boo){
+      console.log('校驗成功');
+      postData();
+    }else{
+      console.log('校驗失敗')
+    }
+  });
+
+  function postData() {
+    $("#comment-container").load(/*[[@{/comments}]]*/"",{
+      "parentComment.id" : $("[name='parentComment.id']").val(),
+      "blog.id" : $("[name='blog.id']").val(),
+      "nickname" : $("[name='nickname']").val(),
+      "email" : $("[name='email']").val(),
+      "content" : $("[name='content']").val()
+    },function (responseTxt, statusTxt, xhr){
+      $(window).scrollTo($('#comment-container'),500);
+      clearContent();
     });
+  }
 
-    function postData() {
-      $("#comment-container").load(/*[[@{/comments}]]*/"",{
-        "parentComment.id" : $("[name='parentComment.id']").val(),
-        "blog.id" : $("[name='blog.id']").val(),
-        "nickname" : $("[name='nickname']").val(),
-        "email" : $("[name='email']").val(),
-        "content" : $("[name='content']").val()
-      },function (responseTxt, statusTxt, xhr){
-        $(window).scrollTo($('#comment-container'),500);
-        clearContent();
-      });
-    }
 
-    function clearContent(){
-      $("[name='content']").val('');
-      $("[name='parentComment.id']").val(-1);
-      $("[name='content']").attr("placeholder","請輸入評論信息...").focus();
+  function clearContent(){
+    $("[name='content']").val('');
+    $("[name='parentComment.id']").val(-1);
+    $("[name='content']").attr("placeholder","請輸入評論信息...").focus();
 
-    }
+  }
 
-    function reply(obj){
-      var commentId = $(obj).data('commentid');
-      var commentNickname = $(obj).data('commentnickname');
-      $("[name='content']").attr("placeholder","@"+commentNickname).focus();
-      $("[name='parentComment.id']").val(commentId);
-      $(window).scrollTo($('#comment-form'),500);
+  function reply(obj){
+    var commentId = $(obj).data('commentid');
+    var commentNickname = $(obj).data('commentnickname');
+    $("[name='content']").attr("placeholder","@"+commentNickname).focus();
+    $("[name='parentComment.id']").val(commentId);
+    $(window).scrollTo($('#comment-form'),500);
 
-    }
+  }
 
 
 </script>
