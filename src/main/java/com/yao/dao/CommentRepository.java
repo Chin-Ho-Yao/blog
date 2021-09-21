@@ -10,6 +10,6 @@ import java.util.List;
  * Created by Jack Yao on 2021/9/18 9:57 下午
  */
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    List<Comment> findByBlogId(Long blogId, Sort sort);
+    List<Comment> findByBlogIdAndParentCommentNull(Long blogId, Sort sort);
 
 }

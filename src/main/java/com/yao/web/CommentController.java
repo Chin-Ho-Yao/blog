@@ -30,20 +30,22 @@ public class CommentController {
 
     @GetMapping("/comments/{blogId}")
     public String comments(@PathVariable Long blogId, Model model){
-        log.info(" - VVVVV - main - XXXXX - ");
-        log.info(" - XXXXX - model - OOOOO - : " + model);
+        log.info(" - OOOOO - blogId - OOOOO - : " + blogId);
+        log.info(" - OOOOO - model - OOOOO - : " + model);
         model.addAttribute("comments",commentService.listCommentByBlogId(blogId));
-        log.info(" - XXXXX - model - OOOOO - : " + model);
-        log.info(" - _____ - main - XXXXX - ");
+        log.info(" - OOOOO - model - OOOOO - : " + model);
         return "blog :: commentList";
     }
 
     @PostMapping("/comments")
     public String post(Comment comment){
+        log.info(" - XXXXX - comment - OOOOO - : " + comment);
         Long blogId = comment.getBlog().getId();
+        log.info(" - XXXXX - blogId - OOOOO - : " + blogId);
         comment.setBlog(blogService.getBlog(blogId));
         comment.setAvatar(avatar);
         commentService.saveComment(comment);
+        log.info(" - XXXXX - commentService - OOOOO - : " + commentService);
         return "redirect:/comments/" + blogId;
     }
 }

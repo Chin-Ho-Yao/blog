@@ -532,6 +532,28 @@ h5,h6{font-size:1em;}
                   <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回覆</a>
                 </div>
               </div>
+              <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                <div class="comment" th:each="reply : ${comment.replyComments}">
+                  <a class="avatar">
+                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                  </a>
+                  <div class="content">
+                    <a class="author" >
+                      <span th:text="${reply.nickname}">小紅</span>&nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
+                    </a>
+                    <div class="metadata">
+                      <span class="date" th:text="${#dates.format(reply.createTime, 'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                    </div>
+                    <div class="text" th:text="${reply.content}">
+                      How artistic!
+                    </div>
+                    <div class="actions">
+                      <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}" onclick="reply(this)">回覆</a>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
             <!--/*-->
             <div class="comment">
@@ -778,8 +800,10 @@ h5,h6{font-size:1em;}
     }
   });
 
+  /*每此進入網頁直接load該頁面blog.id的評論*/
   $(function () {
-    $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+    console.log(/*[[@{/comments/{id}(id=${blog.id})}]]*/);
+    $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/);
   });
 
 
