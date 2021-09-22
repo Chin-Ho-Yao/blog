@@ -1,6 +1,7 @@
 package com.yao.web;
 
 import com.yao.po.Comment;
+import com.yao.po.User;
 import com.yao.service.BlogService;
 import com.yao.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Jack Yao on 2021/9/18 6:27 下午
@@ -38,12 +41,20 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    public String post(Comment comment){
+    public String post(Comment comment, HttpSession session){
         log.info(" - XXXXX - comment - OOOOO - : " + comment);
         Long blogId = comment.getBlog().getId();
         log.info(" - XXXXX - blogId - OOOOO - : " + blogId);
         comment.setBlog(blogService.getBlog(blogId));
-        comment.setAvatar(avatar);
+        User user = (User)session.getAttribute("user");
+        log.info(" - XXXXX - user - OOOOO - : " + user);
+        if (user != null){
+            comment.setAvatar(user.getAvatar());
+            comment.setAdminComment(true);
+        }else {
+            comment.setAvatar(avatar);
+        }
+
         commentService.saveComment(comment);
         log.info(" - XXXXX - commentService - OOOOO - : " + commentService);
         return "redirect:/comments/" + blogId;

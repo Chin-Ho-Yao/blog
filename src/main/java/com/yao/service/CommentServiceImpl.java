@@ -25,10 +25,11 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public List<Comment> listCommentByBlogId(Long blogId) {
-        log.info(" - XXXXX - blogId - OOOOO - : " + blogId);
+        log.info(" - OOOOO - blogId - OOOOO - : " + blogId);
 
-        Sort sort = new Sort(Sort.Direction.DESC,"createTime");
+        Sort sort = new Sort("createTime");
         List<Comment> comments = commentRepository.findByBlogIdAndParentCommentNull(blogId,sort);
+
         log.info(" - XXXXX - comments - OOOOO - : " + comments);
         return eachComment(comments);
     }

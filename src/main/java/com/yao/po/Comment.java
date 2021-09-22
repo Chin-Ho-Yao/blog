@@ -126,6 +126,13 @@ public class Comment {
                 ", content='" + content + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", createTime=" + createTime +
+//                ", blog=" + blog +
+//                ", replyComments=" + replyComments +
+                ", parentComment=" + parentComment +
+                ", adminComment=" + adminComment +
                 '}';
+
+        //blog、replyComments都會出錯
+        //
     }
 }
