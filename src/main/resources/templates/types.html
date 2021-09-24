@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
   <meta charset="UTF-8">
   <!--  移動端預覽設置  -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
 <body>
 
 <!--導航-->
-<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+<nav th:replace="_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini ">
   <div class="ui container">
     <div class="ui inverted secondary stackable menu">
       <h2 class="ui teal header item">Blog</h2>
@@ -47,246 +47,65 @@
           <h3 class="ui teal header">分類</h3>
         </div>
         <div class="right aligned column">
-          共<h2 class="ui orange header m-inline-block m-text-thin">14</h2>個
+          共<h2 class="ui orange header m-inline-block m-text-thin" th:text="${#arrays.length(types)}">14</h2>個
         </div>
       </div>
     </div>
 
     <div class="ui attached segment m-padded-tb-large"><!--自定義讓邊框與標籤間距變大-->
-      <div class="ui labeled button m-margin-tb-tiny"><!--加上自定義m-margin-tb-tiny避免小螢幕標先堆疊時黏再一起-->
-        <a href="#" class="ui basic teal button">思考與感悟</a>
-        <div class="ui basic teal left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny"><!--再做一個沒有選中的效果-->
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
-      </div>
-      <div class="ui labeled button m-margin-tb-tiny">
-        <a href="#" class="ui basic button">開發者手冊</a>
-        <div class="ui basic left pointing label">24</div>
+      <div class="ui labeled button m-margin-tb-tiny" th:each="type : ${types}"><!--加上自定義m-margin-tb-tiny避免小螢幕標先堆疊時黏再一起-->
+        <a href="#" th:href="@{/types/{id}(id=${type.id})}" class="ui basic button" th:classappend="${type.id == activeTypeId} ? 'teal'" th:text="${type.name}">思考與感悟</a>
+        <div class="ui basic left pointing label" th:classappend="${type.id == activeTypeId} ? 'teal'" th:text="${#arrays.length(type.blogs)}">24</div>
       </div>
     </div>
 
     <div class="ui top attached teal segment">
-      <div class="ui padded vertical segment m-padded-tb-large m-padded-lr-clear"><!--增加自訂義與邊框距離-->
-        <div class="ui mobile reversed stackable grid">
+      <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.content}">
+        <div class="ui middle aligned mobile reversed stackable grid" >
           <div class="ui eleven wide column ">
-            <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-            <p class="m-text">
+            <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" class="m-black" th:text="${blog.title}">你真的理解什麼是財富自由嗎？</a></h3>
+            <p class="m-text" th:text="|${blog.description}......|">
               做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-            <div class="ui stackable grid ">
+            <div class="ui grid ">
               <div class="eleven wide column">
                 <div class="ui mini horizontal linked list">
                   <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1005" alt=""
-                         class="ui avatar image">
-                    <div class="content"><a href="#" class="header ">姚欽和</a></div>
+                    <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}" alt="" class="ui avatar image">
+                    <div class="content"><a href="#" class="header " th:text="${blog.user.nickname}">姚欽和</a></div>
                   </div>
                   <div class="item">
-                    <i class="calendar icon"></i>2021-05-21<!--undone-->
+                    <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-mm-dd')}">2021-05-21</span>
                   </div>
                   <div class="item">
-                    <i class="eye icon"></i>2345<!--undone-->
+                    <i class="eye icon" ></i><span th:text="${blog.views}">2345</span>
                   </div>
                 </div>
               </div>
 
               <div class="right aligned five wide column">
-                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
+                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny" th:text="${blog.type.name}">認知升級</a>
               </div>
             </div>
           </div>
 
 
           <div class="ui five wide column ">
-            <a href="#" target="_blank">
-              <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
+            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+              <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui rounded image">
             </a>
           </div>
         </div>
-      </div><!--這邊複製index的博客列表-->
-      <div class="ui padded vertical segment m-padded-tb-large m-padded-lr-clear"><!--增加自訂義與邊框距離-->
-        <div class="ui mobile reversed stackable grid">
-          <div class="ui eleven wide column ">
-            <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-            <p class="m-text">
-              做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-            <div class="ui stackable grid ">
-              <div class="eleven wide column">
-                <div class="ui mini horizontal linked list">
-                  <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1005" alt=""
-                         class="ui avatar image">
-                    <div class="content"><a href="#" class="header ">姚欽和</a></div>
-                  </div>
-                  <div class="item">
-                    <i class="calendar icon"></i>2021-05-21<!--undone-->
-                  </div>
-                  <div class="item">
-                    <i class="eye icon"></i>2345<!--undone-->
-                  </div>
-                </div>
-              </div>
-
-              <div class="right aligned five wide column">
-                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="ui five wide column ">
-            <a href="#" target="_blank">
-              <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
-            </a>
-          </div>
-        </div>
-      </div><!--這邊複製index的博客列表-->
-      <div class="ui padded vertical segment m-padded-tb-large m-padded-lr-clear"><!--增加自訂義與邊框距離-->
-        <div class="ui mobile reversed stackable grid">
-          <div class="ui eleven wide column ">
-            <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-            <p class="m-text">
-              做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-            <div class="ui stackable grid ">
-              <div class="eleven wide column">
-                <div class="ui mini horizontal linked list">
-                  <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1005" alt=""
-                         class="ui avatar image">
-                    <div class="content"><a href="#" class="header ">姚欽和</a></div>
-                  </div>
-                  <div class="item">
-                    <i class="calendar icon"></i>2021-05-21<!--undone-->
-                  </div>
-                  <div class="item">
-                    <i class="eye icon"></i>2345<!--undone-->
-                  </div>
-                </div>
-              </div>
-
-              <div class="right aligned five wide column">
-                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="ui five wide column ">
-            <a href="#" target="_blank">
-              <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
-            </a>
-          </div>
-        </div>
-      </div><!--這邊複製index的博客列表-->
-      <div class="ui padded vertical segment m-padded-tb-large m-padded-lr-clear"><!--增加自訂義與邊框距離-->
-        <div class="ui mobile reversed stackable grid">
-          <div class="ui eleven wide column ">
-            <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-            <p class="m-text">
-              做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-            <div class="ui stackable grid ">
-              <div class="eleven wide column">
-                <div class="ui mini horizontal linked list">
-                  <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1005" alt=""
-                         class="ui avatar image">
-                    <div class="content"><a href="#" class="header ">姚欽和</a></div>
-                  </div>
-                  <div class="item">
-                    <i class="calendar icon"></i>2021-05-21<!--undone-->
-                  </div>
-                  <div class="item">
-                    <i class="eye icon"></i>2345<!--undone-->
-                  </div>
-                </div>
-              </div>
-
-              <div class="right aligned five wide column">
-                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="ui five wide column ">
-            <a href="#" target="_blank">
-              <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
-            </a>
-          </div>
-        </div>
-      </div><!--這邊複製index的博客列表-->
-      <div class="ui padded vertical segment m-padded-tb-large m-padded-lr-clear"><!--增加自訂義與邊框距離-->
-        <div class="ui mobile reversed stackable grid">
-          <div class="ui eleven wide column ">
-            <h3 class="ui header">你真的理解什麼是財富自由嗎？</h3>
-            <p class="m-text">
-              做正確的事是正確做事的前提，只有做出恰當的選擇，做正確的事，才有可能迎來成功。一旦選擇了錯誤，做了不正常的決定，無論你多麼勤奮和努力，結果也只是離目標越來越遠，永遠不會有實現目標的那一天。</p>
-            <div class="ui stackable grid ">
-              <div class="eleven wide column">
-                <div class="ui mini horizontal linked list">
-                  <div class="item">
-                    <img src="https://unsplash.it/100/100?image=1005" alt=""
-                         class="ui avatar image">
-                    <div class="content"><a href="#" class="header ">姚欽和</a></div>
-                  </div>
-                  <div class="item">
-                    <i class="calendar icon"></i>2021-05-21<!--undone-->
-                  </div>
-                  <div class="item">
-                    <i class="eye icon"></i>2345<!--undone-->
-                  </div>
-                </div>
-              </div>
-
-              <div class="right aligned five wide column">
-                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny">認知升級</a>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="ui five wide column ">
-            <a href="#" target="_blank">
-              <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
-            </a>
-          </div>
-        </div>
-      </div><!--這邊複製index的博客列表-->
+      </div>
 
     </div>
     <!--footer-->
-    <div class="ui bottom attached segment"><!--從index抓過來要黏著attached-->
-      <div class="ui two column grid">
-        <div class="ui left aligned column">
-          <a href="#" class="ui mini teal basic  button ">上一頁</a>
+    <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
+      <div class="ui middle aligned two column grid">
+        <div class="column">
+          <a href="#" th:href="@{/(page=${page.number}-1)}" th:unless="${page.first}" class="ui mini teal basic button ">上一頁</a>
         </div>
         <div class="ui right aligned column">
-          <a href="#" class="ui mini teal basic button ">下一頁</a>
+          <a href="#" th:href="@{/(page=${page.number}+1)}" th:unless="${page.last}" class="ui mini teal basic button ">下一頁</a>
         </div>
       </div>
     </div>
@@ -295,7 +114,8 @@
 </div>
 
 <!--底部footer-->
-<footer class=" vertical inverted segment ui m-padded-tb-massive">
+
+<footer th:replace="_fragments :: footer" class=" vertical inverted segment ui m-padded-tb-massive">
   <div class="ui center aligned container">
     <div class=" ui inverted divided stackable grid">
       <div class="three wide column">
@@ -329,8 +149,12 @@
 </footer>
 
 <!--字元引入-->
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
 <script>
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide')
