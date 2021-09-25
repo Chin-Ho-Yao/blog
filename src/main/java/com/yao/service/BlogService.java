@@ -22,6 +22,8 @@ public interface BlogService {
 
     Page<Blog> listBlog(Pageable pageable);
 
+    Page<Blog> listBlog(Long tagId, Pageable pageable);
+
     Page<Blog> listBlog(String query,Pageable pageable);
 
     /*#37首頁最新推薦表格數據獲取*/
