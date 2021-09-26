@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jack Yao on 2021/5/31 11:38 上午
@@ -28,6 +29,10 @@ public interface BlogService {
 
     /*#37首頁最新推薦表格數據獲取*/
     List<Blog> listRecommendBlogTop(Integer size);
+
+    Map<String,List<Blog>> archiveBlog();
+
+    Long countBlog();
 
     /*新增*/
     Blog saveBlog(Blog blog);

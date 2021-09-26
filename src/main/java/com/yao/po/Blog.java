@@ -20,6 +20,7 @@ public class Blog {
     private String title;
     @Basic(fetch = FetchType.LAZY)
     @Lob/*大字段類型，只有第一次初始化有效，合併懶加載使用，只在用到時才載入關聯的物件。*/
+
     private String content;
     private String firstPicture;
     private String flag;
