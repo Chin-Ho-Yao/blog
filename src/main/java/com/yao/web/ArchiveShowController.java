@@ -1,7 +1,7 @@
 package com.yao.web;
 
 import com.yao.service.BlogService;
-import lombok.extern.slf4j.Slf4j;
+import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,6 @@ public class ArchiveShowController {
     public String archives(Model model){
         model.addAttribute("archiveMap",blogService.archiveBlog());
         model.addAttribute("blogCount",blogService.countBlog());
-        log.info(" - XXXXX - return \"/archives\" - OOOOO - : ");
         return "/archives";
     }
 
