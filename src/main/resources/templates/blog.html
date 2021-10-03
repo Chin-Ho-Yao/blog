@@ -40,7 +40,7 @@
 </nav>
 
 <!--中間內容-->
-<div id="waypoint" class="m-container-small m-padded-tb-big animate__animated animate__fadeIn">
+<div id="waypoint" class="m-container-small m-padded-tb-big ">
   <div class="ui container ">
     <!--頭部-->
     <div class="ui top attached segment ">
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="item">
-          <i class="calendar icon" ></i><span th:text="${#dates.format(blog.updateTime,'yyyy-mm-dd')}">2021-05-21</span>
+          <i class="calendar icon" ></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-05-21</span>
         </div>
         <div class="item">
           <i class="eye icon"></i><span th:text="${blog.views}">2345</span>
@@ -463,24 +463,26 @@ h5,h6{font-size:1em;}
       </div>
 
       <!--讚賞-->
-      <div class="ui center aligned basic segment">
-        <button id="payButton" class="ui orange basic circular button ">讚賞</button>
-      </div>
-      <!--彈出功能-->
-      <div class="ui payQR flowing popup transition hidden">
-        <div class="ui orange basic label">
-          <div class="ui images" style="font-size: inherit !important;">
-            <div class="image">
-              <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
-              <div>支付寶</div>
-            </div>
-            <div class="image">
-              <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
-              <div>支付寶</div>
-            </div>
-            <div class="image">
-              <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
-              <div>支付寶</div>
+      <div th:if="${blog.appreciation}">
+        <div class="ui center aligned basic segment">
+          <button id="payButton" class="ui orange basic circular button ">讚賞</button>
+        </div>
+        <!--彈出功能-->
+        <div class="ui payQR flowing popup transition hidden">
+          <div class="ui orange basic label">
+            <div class="ui images" style="font-size: inherit !important;">
+              <div class="image">
+                <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
+                <div>支付寶</div>
+              </div>
+              <div class="image">
+                <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
+                <div>支付寶</div>
+              </div>
+              <div class="image">
+                <img src="../static/images/footerQrcode.png" alt="" th:src="@{/images/footerQrcode.png}" class="ui rounded bordered image " style="width: 120px">
+                <div>支付寶</div>
+              </div>
             </div>
           </div>
         </div>
@@ -489,7 +491,7 @@ h5,h6{font-size:1em;}
 
     </div>
     <!--博客信息-->
-    <div class="ui attached positive message">
+    <div class="ui attached positive message" th:if="${blog.shareStatement}">
       <div class="ui middle aligned grid">
         <div class="eleven wide column">
           <ui class="list">
@@ -508,9 +510,9 @@ h5,h6{font-size:1em;}
     </div>
 
 
-    <div class="ui bottom attached segment">
+    <div class="ui bottom attached segment" th:if="${blog.commentabled}">
       <!--留言區域列表-->
-      <div id="comment-container" class="ui teal segment">
+      <div id="comment-container"  class="ui teal segment">
         <div th:fragment="commentList">
           <div class="ui threaded comments" style="max-width: 100%">
             <h3 class="ui dividing header">評論123</h3>
@@ -748,7 +750,7 @@ h5,h6{font-size:1em;}
     position: 'left center'
   });
 
-  var serurl = "127.0.0.1:8080";
+  var serurl = /*[[#{blog.serurl}]]*/"127.0.0.1:8080";
   var url = /*[[@{blog/{id}(id=${blog.id})}]]*/"";
   var qrcode = new QRCode("qrcode", {/*這邊的test就是放id*/
     text: serurl+url,

@@ -7,6 +7,7 @@ import com.yao.util.MarkdownUtils;
 import com.yao.util.MyBeanUtils;
 import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.*;
  * Created by Jack Yao on 2021/5/31 1:39 下午
  */
 
+@Slf4j
 @Service/*標記他為service層*/
 public class BlogServiceImpl implements BlogService{
 
@@ -48,7 +50,10 @@ public class BlogServiceImpl implements BlogService{
         Blog b = new Blog();
         BeanUtils.copyProperties(blog,b);
         String content = b.getContent();
+        log.info("content :"+content);
         b.setContent(MarkdownUtils.markdownToHtmlExtensions(content));
+        log.info("b :"+b);
+
         blogRepository.updateViews(id);
         return b;
     }

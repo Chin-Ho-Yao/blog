@@ -62,6 +62,7 @@ public class IndexController {
     public String blog(@PathVariable Long id,Model model) {
         log.info("------index------");
         model.addAttribute("blog", blogService.getAndConvert(id));
+        log.info("model :"+model);
         return "blog";/*返回blog.html頁面*/
     }
 

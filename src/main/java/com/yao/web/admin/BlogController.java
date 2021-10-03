@@ -6,6 +6,7 @@ import com.yao.service.BlogService;
 import com.yao.service.TagService;
 import com.yao.service.TypeService;
 import com.yao.vo.BlogQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
  * Created by Jack Yao on 2021/5/28 10:07 下午
  */
 
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 public class BlogController {
@@ -47,7 +49,10 @@ public class BlogController {
         model.addAttribute("types", typeService.listType());
         /*拿到type之後進blog.html渲染*/
 
-                model.addAttribute("page", blogService.listBlog(pageable, blog));
+        log.info("types "+ typeService.listType());
+        log.info("blog "+blogService.listBlog(pageable, blog));
+        model.addAttribute("page", blogService.listBlog(pageable, blog));
+        log.info("model "+model);
         /*listBlog裡面的值，除了blog還要有pageable*/
         /*pageable:分頁的對象，要指定默認的參數@PageableDefault，不指定也可以*/
         /*按updateTime更新時間倒敘排序 DESC*/
