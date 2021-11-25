@@ -2,6 +2,9 @@ package com.yao.web.admin;
 
 import com.yao.po.Tag;
 import com.yao.service.TagService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +23,7 @@ import javax.validation.Valid;
 /**
  * Created by Jack Yao on 2021/5/29 4:48 下午
  */
-
+@Slf4j
 @Controller
 @RequestMapping("/admin")/*後台管理*/
 public class TagController {
@@ -44,6 +47,7 @@ public class TagController {
     @GetMapping("/tags/input")         /*tags.html的href="#" th:href="@{/admin/tags/input點擊後會跳到這}" */
     public String input(Model model){              /*返回新增的頁面*/
         model.addAttribute("tag", new Tag());
+    	log.info(" - XXXXX - new Tag() - OOOOO - : "+model);
         return "admin/tags-input";     /*返回這個檔案*/
     }
 
@@ -53,12 +57,17 @@ public class TagController {
         /*根據id查詢的tag*/
         model.addAttribute("tag", tagService.getTag(id));
         /*這樣要修改的tag，就會放到model，然後返回頁面上*/
+
         return "admin/tags-input";
     }
 
 
     @PostMapping("/tags")              /*這邊是用post所以不會衝突*/
     public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
+    	log.info(" - VVVVV - post tags - XXXXX - ");
+    	
+    	log.info(" - XXXXX - result - OOOOO - : "+result);
+    	log.info(" - XXXXX - attributes - OOOOO - : "+attributes);
 
         /*先查詢，傳遞過來的tag.getName*/
         Tag tag1 = tagService.getTagByName(tag.getName());
@@ -78,6 +87,7 @@ public class TagController {
         }else {
             attributes.addFlashAttribute("message", "新增成功");
         }
+        log.info(" - _____ - post tags - XXXXX - ");
         return "redirect:/admin/tags";         /*redirect重定向*/
     }
 
@@ -87,7 +97,9 @@ public class TagController {
     /*然後用在tagService.updateTag(id, tag);裡面*/
     @PostMapping("/tags/{id}")
     public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id, RedirectAttributes attributes){
-        Tag tag1 = tagService.getTagByName(tag.getName());
+    	log.info(" - VVVVV - editPost - XXXXX - ");
+    	
+    	Tag tag1 = tagService.getTagByName(tag.getName());
         if(tag1 != null){
             result.rejectValue("name", "nameError", "不能重複添加分類");
         }
@@ -103,6 +115,7 @@ public class TagController {
         }else {
             attributes.addFlashAttribute("message", "更新成功");
         }
+    	log.info(" - _____ - editPost - XXXXX - ");
         return "redirect:/admin/tags";
     }
 
@@ -113,6 +126,9 @@ public class TagController {
         tagService.deleteTag(id);
         /*刪除後沒拋錯就直接出現這個訊息*/
         attributes.addFlashAttribute("message", "刪除成功");
+
+    	log.info(" - XXXXX - delete id- OOOOO - : " + id);
+    	log.info(" - XXXXX - attributes- OOOOO - : " + attributes);
 
         /*返回列表*/
         return "redirect:/admin/tags";

@@ -31,7 +31,7 @@
             </div>
             <i class="dropdown icon"></i><!--製作下拉菜單-->
             <div class="menu">
-              <a href="#" th:href="@{/admin/logout}" class="item">註銷</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
+              <a href="#" th:href="@{/admin/logout}" class="item">登出</a><!--註銷當前用戶--><!--還要加上js才會有效果-->
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
         </div>
         <div class="three wide column"><h4 class="ui inverted header m-text-thin m-text-spaced">聯繫我</h4>
           <div class="ui inverted link list">
-            <a href="#" class="item m-text-lighter ">Email:q82717182q@gmail.com<br></a>
+            <a href="#" class="item m-text-lighter " th:text="#{index.email}">Email:undefine@gmail.com<br></a>
             <a href="#" class="item">Line:yaoyao25<br></a>
           </div>
         </div>
