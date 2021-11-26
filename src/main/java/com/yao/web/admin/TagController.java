@@ -32,7 +32,7 @@ public class TagController {
     private TagService tagService;/*TagService注入就知道要傳什麼參數了*/
 
     @GetMapping("/tags")/*通過get訪問*/
-    public String tags(@PageableDefault(size = 10, sort = {"id"}, direction = Sort.Direction.DESC)
+    public String tags(@PageableDefault(size = 20, sort = {"name"}, direction = Sort.Direction.ASC)
                                 Pageable pageable, Model model){
         /*根據前端頁面自動構造好的會封裝載pageable裡面，這是Spring Boot裡面封裝好的方法*/
         /*向每個分頁有多少參數排序，要用註解的方式指定參數size默認指定一頁十條*/
@@ -64,11 +64,7 @@ public class TagController {
 
     @PostMapping("/tags")              /*這邊是用post所以不會衝突*/
     public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
-    	log.info(" - VVVVV - post tags - XXXXX - ");
-    	
-    	log.info(" - XXXXX - result - OOOOO - : "+result);
-    	log.info(" - XXXXX - attributes - OOOOO - : "+attributes);
-
+    	log.info(" - VVVVV - post tags - OOOOO - ");
         /*先查詢，傳遞過來的tag.getName*/
         Tag tag1 = tagService.getTagByName(tag.getName());
         /*根據tag檢查有沒有這個Name，有就不通過，返回錯誤，用result，手動加錯誤驗證。@NotBlank是綁定的驗證*/
@@ -77,17 +73,19 @@ public class TagController {
             最終返回的消息（給前端），在tags-input.html的提交信息不符合规则接收*/
             result.rejectValue("name", "nameError", "不能重複添加分類");
         }
+
         if (result.hasErrors()){
+            log.info(" - _____ - return \"admin/tags-input\" - OOOOO - ");
             return "admin/tags-input";
         }
         Tag t = tagService.saveTag(tag);        /*傳遞對象自動會把name封裝到Tag對象裡面*/
-
+    	log.info(" - OOOOO - t - OOOOO - : " + t);
         if(t == null){
             attributes.addFlashAttribute("message", "新增失敗");
         }else {
             attributes.addFlashAttribute("message", "新增成功");
         }
-        log.info(" - _____ - post tags - XXXXX - ");
+        log.info(" - _____ - return \"redirect:/admin/tags\" - OOOOO - ");
         return "redirect:/admin/tags";         /*redirect重定向*/
     }
 

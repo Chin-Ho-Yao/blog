@@ -6,8 +6,7 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 <!---->
     <!--重写了Spring Boot框架 org/springframework/boot/logging/logback/file-appender.xml 配置-->
-    <appender name="TIME_FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="TIME_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
@@ -24,7 +23,20 @@
             </timeBasedFileNamingAndTriggeringPolicy>
 
         </rollingPolicy>
+        <encoder charset="UTF-8">
+            <!-- 輸出日誌記錄格式 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} Line:%line- %msg%n</pattern>
+        </encoder>
     </appender>
+
+	<!-- 控制台輸出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <!-- 輸出日誌記錄格式 -->
+            <layout class="ch.qos.logback.classic.PatternLayout">
+            	<pattern>%d{yyyy-MM-dd HH:mm:ss} [%20thread] %-5level %-42logger{36} Line:%-3line - %msg%n</pattern>
+        	</layout>
+    </appender>
+
 
     <root level="INFO">
         <appender-ref ref="CONSOLE" />

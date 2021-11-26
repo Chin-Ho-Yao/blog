@@ -43,22 +43,27 @@ public class BlogController {
 
     /*加上model*/
     @GetMapping("/blogs")
-    public String blogs(@PageableDefault(size = 6, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
-        /*BQ為查詢用*/
+    public String blogs(@PageableDefault(size = 10, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
+        
+    	log.info(" - VVVVV - blogs - XXXXX - ");
+
+    	/*BQ為查詢用*/
         /*不需要用分頁方式獲取，直接獲取所有，在typeservice定義List<Type>，這邊就可以用listType*/
         model.addAttribute("types", typeService.listType());
         /*拿到type之後進blog.html渲染*/
 
-        log.info("types "+ typeService.listType());
-        log.info("blog "+blogService.listBlog(pageable, blog));
         model.addAttribute("page", blogService.listBlog(pageable, blog));
-        log.info("model "+model);
+    	log.info(" - XXXXX - blog - OOOOO - : " + blog);
+    	log.info(" - XXXXX - pageable - OOOOO - : " + pageable);
+    	log.info(" - XXXXX - model - OOOOO - : " + model);
+
         /*listBlog裡面的值，除了blog還要有pageable*/
         /*pageable:分頁的對象，要指定默認的參數@PageableDefault，不指定也可以*/
         /*按updateTime更新時間倒敘排序 DESC*/
         /*blog:構造好的對象*/
         /*根據blogService.listBlog(pageable, blog)查詢page對象，放到model模型*/
         /*前端就可以拿到model模型進行數據的渲染*/
+    	log.info(" - _____ - blogs return \"admin/blogs\" - XXXXX - ");
         return "admin/blogs";/*blogs方法就是希望訪問到頁面就能看到博客管理頁面*/
     }
 
@@ -122,9 +127,12 @@ public class BlogController {
 
     /*查詢才使用*/
     @PostMapping("/blogs/search")
-    public String search(@PageableDefault(size = 2, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
-
+    public String search(@PageableDefault(size = 5, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
+    	log.info(" - VVVVV - search - XXXXX - ");
+    	
         model.addAttribute("page", blogService.listBlog(pageable, blog));
+        log.info(" - XXXXX - model - OOOOO - : " + model);
+        log.info(" - _____ - search return \"admin/blogs :: blogList - XXXXX - ");
         /*查詢完返回的內容改返回blogs下面的blogList片段，這個片段需要被定義*/
         return "admin/blogs :: blogList";
     }

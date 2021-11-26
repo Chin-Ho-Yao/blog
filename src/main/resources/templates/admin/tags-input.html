@@ -74,12 +74,12 @@
           <input type="text" name="name" placeholder="標籤名稱" th:value="*{name}" >
         </div>
       </div>
-      <!--錯誤訊息，默認會找error，也就是放在這一行-->
+      <!--錯誤訊息，默認會找error，也就是放在這一行，用thymeleaf的註解方式做到需要才會出現-->
       <div class="ui error message"></div>
       <!--/*/
       <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
         <i class="close icon"></i>
-        <div class="header">验证失败</div>
+        <div class="header">驗證失敗</div>
         <p th:errors="*{name}">提交信息不符合规则</p>
       </div>
        /*/-->

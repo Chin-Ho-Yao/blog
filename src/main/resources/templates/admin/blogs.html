@@ -224,6 +224,7 @@
     /*$(obj)這樣就轉成jQuery對象，通過date方法或的字定義的值，就可以拿到data-page對應的的值*/
     function page(obj) {
         $("[name='page']").val($(obj).data("page"));
+        console.log(" - XXXXX - function page(obj) - OOOOO - : ");
         /*賦值之後希望把表單發送到後面控制器裡面處理，在返回前端渲染出去*/
         /*前端頁面請求*/
         loaddata();
@@ -231,13 +232,15 @@
 
     /*點擊事件，也是調用loaddata方法來發送請求，*/
     $("#search-btn").click(function () {
+        console.log(" - XXXXX - click search-btn - OOOOO - : ");
+
         $("[name='page']").val(0);/*點擊的時候，page值要清零*/
         loaddata();
     });
 
      /*點擊的時候把type內容清掉*/
-    $("#clear-btn")
-        .on('click', function () {
+    $("#clear-btn").on('click', function () {
+            console.log(" - XXXXX - click clear-btn - OOOOO - : ");
             $('.ui.type.dropdown')
                 .dropdown('clear');
         });
@@ -245,6 +248,7 @@
     /*自定義loaddata來發送請求，用jquery的load方法*/
     /*在外層div上面使用load方法來動態獲取表格裡的內容*/
     function loaddata() {
+    	console.log(" - XXXXX - function loaddata() - OOOOO - : ");
         $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search", {
             title: $("[name='title']").val(),
             typeId: $("[name='typeId']").val(),
