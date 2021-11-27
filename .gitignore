@@ -1,5 +1,22 @@
-.idea/***
-build/*
+/.classpath
+/.project
+/bin
+src/main/webapp/js/react
+target/**
+/test-output
+/builds/**
+/.settings
+/.vscode
+*.launch
+src/main/env/local/local_profile.properties
+build/**
+.gradle/*
 log/**
-target/*
-*iml*
+
+# IntelliJ
+out/
+.idea/**
+*.iml
+
+.tern-project
+.springBeans

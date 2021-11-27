@@ -68,7 +68,7 @@
       <div class=" field">
         <div class="ui left labeled input">
           <label class="ui teal basic label">名稱</label>
-          <input type="text" name="name" placeholder="分類名稱" th:value="*{name}" >
+          <input type="text" name="name" placeholder="分類名稱" autofocus  th:value="*{name}" >
         </div>
       </div>
       <!--錯誤訊息，默認會找error，也就是放在這一行-->
@@ -135,8 +135,11 @@
 <!--/*/<th:block th:replace="_fragments :: script">/*/-->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
 <!--/*/</th:block>/*/-->
 <script>
+
+
 
     $('.menu.toggle').click(function () {
         $('.m-item').toggleClass('m-mobile-hide')

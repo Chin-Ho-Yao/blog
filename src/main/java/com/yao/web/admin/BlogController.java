@@ -53,10 +53,7 @@ public class BlogController {
         /*拿到type之後進blog.html渲染*/
 
         model.addAttribute("page", blogService.listBlog(pageable, blog));
-    	log.info(" - XXXXX - blog - OOOOO - : " + blog);
-    	log.info(" - XXXXX - pageable - OOOOO - : " + pageable);
-    	log.info(" - XXXXX - model - OOOOO - : " + model);
-
+        log.info(" - XXXXX - model - OOOOO - : " + model);
         /*listBlog裡面的值，除了blog還要有pageable*/
         /*pageable:分頁的對象，要指定默認的參數@PageableDefault，不指定也可以*/
         /*按updateTime更新時間倒敘排序 DESC*/

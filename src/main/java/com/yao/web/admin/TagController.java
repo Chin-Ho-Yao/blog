@@ -95,7 +95,7 @@ public class TagController {
     /*然後用在tagService.updateTag(id, tag);裡面*/
     @PostMapping("/tags/{id}")
     public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id, RedirectAttributes attributes){
-    	log.info(" - VVVVV - editPost - XXXXX - ");
+    	log.info(" - VVVVV - editPost - OOOOO - ");
     	
     	Tag tag1 = tagService.getTagByName(tag.getName());
         if(tag1 != null){
@@ -113,7 +113,7 @@ public class TagController {
         }else {
             attributes.addFlashAttribute("message", "更新成功");
         }
-    	log.info(" - _____ - editPost - XXXXX - ");
+    	log.info(" - _____ - editPost - OOOOO - ");
         return "redirect:/admin/tags";
     }
 
