@@ -30,7 +30,7 @@ public class TypeController {
     private TypeService typeService;/*TypeService注入就知道要傳什麼參數了*/
 
     @GetMapping("/types")/*通過get訪問*/
-    public String types(@PageableDefault(size = 10, sort = {"id"}, direction = Sort.Direction.DESC)
+    public String types(@PageableDefault(size = 20, sort = {"name"}, direction = Sort.Direction.ASC)
                                 Pageable pageable, Model model){
         /*根據前端頁面自動構造好的會封裝載pageable裡面，這是Spring Boot裡面封裝好的方法*/
         /*向每個分頁有多少參數排序，要用註解的方式指定參數size默認指定一頁十條*/

@@ -188,6 +188,9 @@ public class BlogServiceImpl implements BlogService{
         }
         /*否則就是存在，把新的內容修改屬性，把blog屬性給予b，然後保存b就好*/
         BeanUtils.copyProperties(blog,b, MyBeanUtils.getNullPropertyNames(blog));
+
+        log.info("MyBeanUtils.getNullPropertyNames(blog) :"+Arrays.toString(MyBeanUtils.getNullPropertyNames(blog)));
+        log.info("description :"+b);
         b.setUpdateTime(new Date());
         return blogRepository.save(b);
     }

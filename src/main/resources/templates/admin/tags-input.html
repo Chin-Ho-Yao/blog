@@ -80,7 +80,7 @@
       <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
         <i class="close icon"></i>
         <div class="header">驗證失敗</div>
-        <p th:errors="*{name}">提交信息不符合规则</p>
+        <p th:errors="*{name}">提交信息不符合規則</p>
       </div>
        /*/-->
       <!--右邊三個標籤-->
@@ -155,7 +155,7 @@
                 identifier: 'name',/*標題要符合表單內部屬性質*/
                 rules: [{/*驗證規則，可指定多個值*/
                     type: 'empty',/*類型*/
-                    prompt: '請輸入分類名稱（前端）'/*提示內容*/
+                    prompt: '請輸入分類名稱'/*提示內容*/
                 }]
             }
         }
