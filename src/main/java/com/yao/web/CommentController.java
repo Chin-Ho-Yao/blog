@@ -5,6 +5,9 @@ import com.yao.po.User;
 import com.yao.service.BlogService;
 import com.yao.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 public class CommentController {
+    private final Logger log = LoggerFactory.getLogger(CommentController.class);
 
     @Autowired
     private CommentService commentService;

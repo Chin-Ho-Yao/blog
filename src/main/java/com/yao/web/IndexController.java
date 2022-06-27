@@ -1,9 +1,13 @@
 package com.yao.web;
 
 import com.yao.service.BlogService;
+import com.yao.service.CommentServiceImpl;
 import com.yao.service.TagService;
 import com.yao.service.TypeService;
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @Controller
 public class IndexController {
+    private final Logger log = LoggerFactory.getLogger(IndexController.class);
 
 
     @Autowired

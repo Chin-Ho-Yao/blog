@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 /*繼承JPa，Blog類型，Long主鍵。JpaSpecificationExecutor傳遞Blog*/
-public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificationExecutor {
+public interface BlogRepository extends JpaRepository<Blog,Long>, JpaSpecificationExecutor<Blog> {
      /*#37首頁最新推薦表格數據獲取*/
     @Query("select b from Blog b where b.recommend = true ")/*這邊多一個true代表是推薦的博客*/
     List<Blog> findTop(Pageable pageable);

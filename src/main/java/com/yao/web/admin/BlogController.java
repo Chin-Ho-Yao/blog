@@ -7,6 +7,9 @@ import com.yao.service.TagService;
 import com.yao.service.TypeService;
 import com.yao.vo.BlogQuery;
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,6 +33,7 @@ public class BlogController {
     private static final String INPUT = "admin/blogs-input";
     private static final String LIST = "admin/blogs";
     private static final String REDIRECT_LIST = "redirect:/admin/blogs";
+    private final Logger log = LoggerFactory.getLogger(BlogController.class);
 
     /*放一組數據過來*/
     @Autowired
@@ -44,21 +48,21 @@ public class BlogController {
     /*加上model*/
     @GetMapping("/blogs")
     public String blogs(@PageableDefault(size = 10, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
-    	log.info(" - VVVVV - blogs - OOOOO - ");
+    	log.debug(" - VVVVV - blogs - OOOOO - ");
     	/*BQ為查詢用*/
         /*不需要用分頁方式獲取，直接獲取所有，在typeservice定義List<Type>，這邊就可以用listType*/
         model.addAttribute("types", typeService.listType());
         /*拿到type之後進blog.html渲染*/
 
         model.addAttribute("page", blogService.listBlog(pageable, blog));
-        log.info(" - OOOOO - model - OOOOO - : " + model);
+        log.debug(" - OOOOO - model - OOOOO - : " + model);
         /*listBlog裡面的值，除了blog還要有pageable*/
         /*pageable:分頁的對象，要指定默認的參數@PageableDefault，不指定也可以*/
         /*按updateTime更新時間倒敘排序 DESC*/
         /*blog:構造好的對象*/
         /*根據blogService.listBlog(pageable, blog)查詢page對象，放到model模型*/
         /*前端就可以拿到model模型進行數據的渲染*/
-    	log.info(" - _____ - blogs return \"admin/blogs\" - OOOOO - ");
+    	log.debug(" - _____ - blogs return \"admin/blogs\" - OOOOO - ");
         return "admin/blogs";/*blogs方法就是希望訪問到頁面就能看到博客管理頁面*/
     }
 
@@ -121,14 +125,14 @@ public class BlogController {
 
     }
 
-    /*查詢才使用*/
+    /*查詢，上一頁，下一頁才使用*/
     @PostMapping("/blogs/search")
     public String search(@PageableDefault(size = 10, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
-    	log.info(" - VVVVV - search - XXXXX - ");
+    	log.debug(" - VVVVV - search - OOOOO - ");
     	
         model.addAttribute("page", blogService.listBlog(pageable, blog));
-        log.info(" - XXXXX - model - OOOOO - : " + model);
-        log.info(" - _____ - search return \"admin/blogs :: blogList - XXXXX - ");
+        log.debug(" - OOOOO - model - OOOOO - : " + model);
+        log.debug(" - _____ - search return \"admin/blogs :: blogList - OOOOO - ");
         /*查詢完返回的內容改返回blogs下面的blogList片段，這個片段需要被定義*/
         return "admin/blogs :: blogList";
     }

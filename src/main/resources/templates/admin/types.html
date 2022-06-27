@@ -75,7 +75,7 @@
         <td>
           <!--調用input右邊的id傳述之後就會替換到types/id這個位置-->
           <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">編輯</a>
-          <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">刪除</a>
+          <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" onclick="return confirmDelete()" class="ui mini red basic button">刪除</a>
         </td>
       </tr>
       </tbody>
@@ -154,6 +154,13 @@
           .closest('.message')
           .transition('fade');
       });
+    function confirmDelete(){
+      if (confirm("Are you sure you want to delete?")){
+        return true;
+      }else {
+        return false;
+      }
+    }
 </script>
 </body>
 </html>

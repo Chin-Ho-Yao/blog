@@ -7,7 +7,12 @@ import com.yao.util.MarkdownUtils;
 import com.yao.util.MyBeanUtils;
 import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
+import com.yao.web.admin.BlogController;
+
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,7 @@ import java.util.*;
 @Slf4j
 @Service/*標記他為service層*/
 public class BlogServiceImpl implements BlogService{
+    private final Logger log = LoggerFactory.getLogger(BlogService.class);
 
     /*@Autowired注入blogRepository*/
     @Autowired
@@ -57,6 +63,7 @@ public class BlogServiceImpl implements BlogService{
         blogRepository.updateViews(id);
         return b;
     }
+
 
     /*分頁動態查詢方式，較複雜最後處理*/
     /*根據條件動態組合，三個條件可能傳可能不傳，根據不同組合查詢數據戶，就是動態查詢*/

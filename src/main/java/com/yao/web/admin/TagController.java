@@ -2,9 +2,12 @@ package com.yao.web.admin;
 
 import com.yao.po.Tag;
 import com.yao.service.TagService;
+import com.yao.web.IndexController;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +30,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/admin")/*後台管理*/
 public class TagController {
+    private final Logger log = LoggerFactory.getLogger(TagController.class);
 
     @Autowired
     private TagService tagService;/*TagService注入就知道要傳什麼參數了*/
@@ -47,7 +51,7 @@ public class TagController {
     @GetMapping("/tags/input")         /*tags.html的href="#" th:href="@{/admin/tags/input點擊後會跳到這}" */
     public String input(Model model){              /*返回新增的頁面*/
         model.addAttribute("tag", new Tag());
-    	log.info(" - XXXXX - new Tag() - OOOOO - : "+model);
+    	log.debug(" - XXXXX - new Tag() - OOOOO - : "+model);
         return "admin/tags-input";     /*返回這個檔案*/
     }
 
@@ -64,7 +68,7 @@ public class TagController {
 
     @PostMapping("/tags")              /*這邊是用post所以不會衝突*/
     public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
-    	log.info(" - VVVVV - post tags - OOOOO - ");
+    	log.debug(" - VVVVV - post tags - OOOOO - ");
         /*先查詢，傳遞過來的tag.getName*/
         Tag tag1 = tagService.getTagByName(tag.getName());
         /*根據tag檢查有沒有這個Name，有就不通過，返回錯誤，用result，手動加錯誤驗證。@NotBlank是綁定的驗證*/
@@ -75,17 +79,17 @@ public class TagController {
         }
 
         if (result.hasErrors()){
-            log.info(" - _____ - return \"admin/tags-input\" - OOOOO - ");
+            log.debug(" - _____ - return \"admin/tags-input\" - OOOOO - ");
             return "admin/tags-input";
         }
         Tag t = tagService.saveTag(tag);        /*傳遞對象自動會把name封裝到Tag對象裡面*/
-    	log.info(" - OOOOO - t - OOOOO - : " + t);
+    	log.debug(" - OOOOO - t - OOOOO - : " + t);
         if(t == null){
             attributes.addFlashAttribute("message", "新增失敗");
         }else {
             attributes.addFlashAttribute("message", "新增成功");
         }
-        log.info(" - _____ - return \"redirect:/admin/tags\" - OOOOO - ");
+        log.debug(" - _____ - return \"redirect:/admin/tags\" - OOOOO - ");
         return "redirect:/admin/tags";         /*redirect重定向*/
     }
 
@@ -95,7 +99,7 @@ public class TagController {
     /*然後用在tagService.updateTag(id, tag);裡面*/
     @PostMapping("/tags/{id}")
     public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id, RedirectAttributes attributes){
-    	log.info(" - VVVVV - editPost - OOOOO - ");
+    	log.debug(" - VVVVV - editPost - OOOOO - ");
     	
     	Tag tag1 = tagService.getTagByName(tag.getName());
         if(tag1 != null){
@@ -113,20 +117,23 @@ public class TagController {
         }else {
             attributes.addFlashAttribute("message", "更新成功");
         }
-    	log.info(" - _____ - editPost - OOOOO - ");
+    	log.debug(" - _____ - editPost - OOOOO - ");
         return "redirect:/admin/tags";
     }
 
     /*刪除，一樣透過id。加上校驗attributes*/
     @GetMapping("/tags/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes attributes){
-        /*直接透過id刪除tag*/
-        tagService.deleteTag(id);
+        try {
+            /*直接透過id刪除tag*/
+            tagService.deleteTag(id);
+            attributes.addFlashAttribute("message", "刪除成功");
+        }catch (Exception e){
+            attributes.addFlashAttribute("message", "標籤使用中，無法刪除");
+        }
         /*刪除後沒拋錯就直接出現這個訊息*/
-        attributes.addFlashAttribute("message", "刪除成功");
-
-    	log.info(" - XXXXX - delete id- OOOOO - : " + id);
-    	log.info(" - XXXXX - attributes- OOOOO - : " + attributes);
+    	log.debug(" - OOOOO - delete id- OOOOO - : " + id);
+    	log.debug(" - OOOOO - attributes- OOOOO - : " + attributes);
 
         /*返回列表*/
         return "redirect:/admin/tags";
