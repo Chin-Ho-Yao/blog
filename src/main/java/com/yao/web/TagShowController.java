@@ -50,7 +50,7 @@ public class TagShowController {
 
 
         log.info(" - XXXXX - return tags - OOOOO - : ");
-        return "/tags";
+        return "tags";
     }
 
 

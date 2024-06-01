@@ -18,9 +18,8 @@ public class Blog {
     @GeneratedValue
     private Long id;
     private String title;
-    @Basic(fetch = FetchType.LAZY)
-    @Lob/*大字段類型，只有第一次初始化有效，合併懶加載使用，只在用到時才載入關聯的物件。*/
-
+    @Basic(fetch = FetchType.LAZY)/*只在用到時才載入關聯的物件，get此物件的時候才用*/
+    @Lob/*大字段類型，只有第一次初始化有效，合併懶加載使用，。*/
     private String content;
     private String firstPicture;
     private String flag;
@@ -35,10 +34,10 @@ public class Blog {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
-    @ManyToOne
+    @ManyToOne//很多blog可能都對應到同一個type，前面是這個class，後面下一行這個property
     private Type type;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.PERSIST})//在儲存時一併儲存 被參考的物件。
     private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
@@ -227,6 +226,7 @@ public class Blog {
                 }
                 ids.append(tag.getId());
             }
+
             return ids.toString();
         }else {
             return tagIds;

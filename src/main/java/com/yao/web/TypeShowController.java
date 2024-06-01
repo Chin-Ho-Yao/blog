@@ -51,7 +51,7 @@ public class TypeShowController {
 
 
         log.info(" - XXXXX - return types - OOOOO - : ");
-        return "/types";
+        return "types";
     }
 
 

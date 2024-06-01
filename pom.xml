@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!--	以上固定-->
+<!--	模型版本，maven2.0必須這樣寫，maven2唯一支持的版本-->
 	<modelVersion>4.0.0</modelVersion>
-
-	<groupId>com.lrm</groupId>
+<!--項目組織的唯一標示符，對應Java的包結構，src/main/java底下的目錄結構-->
+	<groupId>com.yao</groupId>
+<!--	項目名稱-->
 	<artifactId>blog</artifactId>
+<!--	項目的版本號碼-->
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-
+<!--	打包機制，默認為jar-->
+	<packaging>jar</packaging>
+<!--	讓用戶更能接受的項目名稱？-->
 	<name>blog</name>
 	<description>Demo project for Spring Boot</description>
-
+<!--	此項目繼承的項目-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.7.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
+<!--	此項目基本屬性配置 編碼格式，版本號碼-->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -25,13 +30,14 @@
 		<thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
 		<thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
 	</properties>
-
+<!--	項目的依賴結構-->
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20201115</version>
 		</dependency>
+<!--		springbootaop支持-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -44,10 +50,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+<!--		web應用基本環境配置-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+<!--		tomcat支持-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
@@ -84,6 +92,7 @@
 			<scope>runtime</scope>
 			<version>8.0.22</version>
 		</dependency>
+<!--		scope的值-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -111,9 +120,10 @@
 	</dependencies>
 	
 	
-
+<!--建構設置，主要包含兩個部分: plugin設置構建得插件，和resources排除或者刪除資源文件-->
 	<build>
 		<finalName>blog</finalName>
+<!--		使用得插件列表，此處直接用父項目的plugins-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
