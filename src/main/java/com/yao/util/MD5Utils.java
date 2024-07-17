@@ -44,8 +44,9 @@ public class MD5Utils {
 
 
     public static void main(String[] args) {
-        System.out.println(code("111111"));/*調用code這個加密的方法
-        */
+
+//        System.out.println(code("g8G4j"));/*調用code這個加密的方法
+
     }
 }
 

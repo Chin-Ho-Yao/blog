@@ -7,10 +7,7 @@ import com.yao.util.MarkdownUtils;
 import com.yao.util.MyBeanUtils;
 import com.yao.vo.BlogQuery;
 import com.yao.web.NotFoundException;
-import com.yao.web.admin.BlogController;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -120,7 +117,20 @@ public class BlogServiceImpl implements BlogService{
 
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
-        return blogRepository.findAll(pageable);
+        Page<Blog> allBlogs = blogRepository.findAll(pageable);
+        for (Blog allBlog : allBlogs) {
+            String content = allBlog.getContent();
+            if (content == null){
+                continue;
+            }
+            int length = content.length();
+            if (length > 50){
+                allBlog.setDescription(content.substring(0, 50));
+            }else {
+                allBlog.setDescription(content.substring(0, length));
+            }
+        }
+        return allBlogs;
     }
 
     @Override

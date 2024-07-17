@@ -1,11 +1,9 @@
 package com.yao.web;
 
 import com.yao.service.BlogService;
-import com.yao.service.CommentServiceImpl;
 import com.yao.service.TagService;
 import com.yao.service.TypeService;
 import lombok.extern.slf4j.Slf4j;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class IndexController {
     @Autowired
     private TagService tagService;
 
-    /*找路徑，製作分頁@PageableDefault*/
+    /*找路徑，首頁，製作分頁@PageableDefault*/
     @GetMapping("/")
     public String index(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         model.addAttribute("page", blogService.listBlog(pageable));
