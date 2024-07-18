@@ -70,7 +70,7 @@ public class BlogServiceImpl implements BlogService{
     @Override
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
         /*new出來使用，這是傳遞的第一個參數*/
-        return blogRepository.findAll(new Specification<Blog>() {
+        Page<Blog> blogs = blogRepository.findAll(new Specification<Blog>() {
             /*條件動態組合在這裡處理，new出來就自動會給這個方法，就是處理動態查詢條件*/
             /*root就是要查詢的對象也就是Blog，然後映射成Root*/
             /*從Root可以獲取表的屬性字串*/
@@ -82,16 +82,16 @@ public class BlogServiceImpl implements BlogService{
                 List<Predicate> predicates = new ArrayList<>();
                 /*判斷如果title不為空，非空判斷。前面也是如果不為空*/
 
-                if (!"".equals(blog.getTitle()) && blog.getTitle() != null){
-                /*有值傳進來，在組織條件放在集合裡面*/
+                if (!"".equals(blog.getTitle()) && blog.getTitle() != null) {
+                    /*有值傳進來，在組織條件放在集合裡面*/
                     /*add到predicates，他是我們要封裝好的條件，這邊用like查詢*/
                     /*第一個值是查詢對象的屬性的名字，透過get拿到String類型的"title"*/
                     /*第二個是傳遞過來的屬性的值*/
                     /*like查詢不能直接把值給他，要拼接上"%"，這樣才是有效的like*/
-                    predicates.add(cb.like(root.<String>get("title"), "%"+blog.getTitle()+"%"));
+                    predicates.add(cb.like(root.<String>get("title"), "%" + blog.getTitle() + "%"));
                 }
                 /*傳遞分類，傳遞的是type對象，是根據id值判斷*/
-                if (blog.getTypeId() != null){
+                if (blog.getTypeId() != null) {
                     /*非空一樣add近來，拿到type對象裡面的id，再把blog對象get*/
                     predicates.add(cb.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
                     /*這樣就構造好了這個分類*/
@@ -113,42 +113,48 @@ public class BlogServiceImpl implements BlogService{
             }
             /*第二個參數是*/
         }, pageable);
+        setDescription(blogs);
+        return blogs;
     }
 
     @Override
     public Page<Blog> listBlog(Pageable pageable) {
-        Page<Blog> allBlogs = blogRepository.findAll(pageable);
-        for (Blog allBlog : allBlogs) {
-            String content = allBlog.getContent();
-            if (content == null){
-                continue;
-            }
+        Page<Blog> blogs = blogRepository.findAll(pageable);
+        setDescription(blogs);
+        return blogs;
+    }
+
+    private void setDescription(Page<Blog> blogs) {
+        for (Blog blog : blogs) {
+            String content = blog.getContent();
+            if (content == null) return;
             int length = content.length();
-            if (length > 50){
-                allBlog.setDescription(content.substring(0, 50));
-            }else {
-                allBlog.setDescription(content.substring(0, length));
+            if (length > 50) {
+                blog.setDescription(content.substring(0, 50));
+            } else {
+                blog.setDescription(content.substring(0, length));
             }
         }
-        return allBlogs;
     }
 
     @Override
     public Page<Blog> listBlog(Long tagId, Pageable pageable) {
-
-
-        return blogRepository.findAll(new Specification<Blog>() {
+        Page<Blog> blogs = blogRepository.findAll(new Specification<Blog>() {
             @Override
             public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 Join join = root.join("tags");
-                return cb.equal(join.get("id"),tagId);
+                return cb.equal(join.get("id"), tagId);
             }
-        },pageable);
+        }, pageable);
+        setDescription(blogs);
+        return blogs;
     }
 
     @Override
     public Page<Blog> listBlog(String query, Pageable pageable) {
-        return blogRepository.findByQuery(query,pageable);
+        Page<Blog> blogs = blogRepository.findByQuery(query, pageable);
+        setDescription(blogs);
+        return blogs;
     }
 
     /*#37首頁最新推薦表格數據獲取*/
